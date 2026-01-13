@@ -141,9 +141,6 @@ npm run lint
 
 This project is open source and available for educational purposes.
 
-## 👨‍💻 Developer
-
-**Designed & Developed by [MNTECH DIGITAL](https://mntechdigital.com/)**
 
 ---
 
