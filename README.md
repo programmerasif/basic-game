@@ -1,73 +1,150 @@
-# React + TypeScript + Vite
+# 🎮 Multi-Level Game Challenge
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An exciting multi-level arcade game built with React, TypeScript, and Tailwind CSS. Progress through three unique gaming experiences: Whack-a-Mole, Maze Adventure, and the Classic Snake Game!
 
-Currently, two official plugins are available:
+## 🚀 Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**Play Now:** [https://hit-the-hade.vercel.app/](https://hit-the-hade.vercel.app/)
 
-## React Compiler
+## ✨ Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 🎯 Three Unique Levels
 
-## Expanding the ESLint configuration
+1. **Level 1: Whack-a-Mole** 🔨
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+   - Click the appearing moles as fast as you can
+   - Score 10 points to advance to the next level
+   - Test your reaction speed and accuracy
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+2. **Level 2: Maze Adventure** 🏰
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+   - Navigate through a procedurally generated maze
+   - Collect items (💰 🍎 🏠 ⭐ 💎) scattered throughout
+   - Reach 20 points or find the castle to progress
+   - Full collision detection - avoid walls!
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+3. **Level 3: Snake Game** 🐍
+   - Classic snake gameplay with modern design
+   - Eat food to grow and increase your score
+   - Avoid walls and your own tail
+   - Reach 30 points to complete all levels!
+
+### 🎮 Controls
+
+#### Desktop
+
+- **Arrow Keys** or **WASD** for movement
+- **Mouse Click** for Whack-a-Mole
+
+#### Mobile
+
+- **On-screen Touch Buttons** for directional control
+- **Tap** for Whack-a-Mole
+- Fully responsive across all devices
+
+### 🌟 Game Features
+
+- ✅ **Progressive Difficulty**: Each level presents a unique challenge
+- 🎨 **Modern UI**: Beautiful gradient designs and smooth animations
+- 📱 **Fully Responsive**: Optimized for mobile, tablet, and desktop
+- 🎯 **Score Tracking**: Persistent score across all levels
+- 🔄 **Level Restart**: Try again without losing progress
+- 🏠 **Start from Beginning**: Reset entire game anytime
+- 💾 **State Management**: Seamless level transitions
+
+## 🛠️ Tech Stack
+
+- **React 18** - UI Framework
+- **TypeScript** - Type Safety
+- **Tailwind CSS** - Styling
+- **Vite** - Build Tool
+- **ESLint** - Code Quality
+
+## 📦 Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/programmerasif/basic-game.git
+
+# Navigate to project directory
+cd hit-the-hade
+
+# Install dependencies
+npm install
+# or
+bun install
+
+# Start development server
+npm run dev
+# or
+bun run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🎯 How to Play
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+1. **Start the Game**: Click "Start Adventure" on the welcome screen
+2. **Level 1**: Click moles to score 10 points
+3. **Level 2**: Navigate the maze using arrow keys/WASD or touch controls
+4. **Level 3**: Control the snake, eat food, and reach 30 total points
+5. **Win**: Complete all three levels to see the victory screen!
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 📂 Project Structure
+
 ```
+src/
+├── components/
+│   ├── GameManager.tsx      # Main game flow controller
+│   ├── WhackAMoleLevel.tsx  # Level 1 component
+│   ├── MazeLevel.tsx        # Level 2 component
+│   ├── MazeGrid.tsx         # Maze rendering & logic
+│   ├── Player.tsx           # Player character
+│   ├── SnakeLevel.tsx       # Level 3 component
+│   ├── SnakeBoard.tsx       # Snake game logic
+│   └── MobileControls.tsx   # Touch controls
+├── App.tsx                  # Root component
+└── main.tsx                 # Entry point
+```
+
+## 🎨 Design Highlights
+
+- **Gradient Backgrounds**: Eye-catching color schemes
+- **Smooth Animations**: Pulse effects and transitions
+- **Emoji Graphics**: Fun and accessible visual elements
+- **Glassmorphism**: Modern backdrop blur effects
+- **Responsive Layout**: Adapts to all screen sizes
+
+## 🔧 Development
+
+```bash
+# Run development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+
+# Lint code
+npm run lint
+```
+
+## 🐛 Bug Fixes & Improvements
+
+- ✅ Wall collision detection in Maze level
+- ✅ Mobile and keyboard controls work simultaneously
+- ✅ Snake level restarts correctly without resetting progress
+- ✅ Fully responsive UI on all devices
+- ✅ Enhanced congratulations screens
+
+## 📝 License
+
+This project is open source and available for educational purposes.
+
+## 👨‍💻 Developer
+
+**Designed & Developed by [MNTECH DIGITAL](https://mntechdigital.com/)**
+
+---
+
+⭐ **Enjoy the game!** Feel free to star this repository if you like it!
