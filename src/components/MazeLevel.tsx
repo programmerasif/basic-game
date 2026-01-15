@@ -6,6 +6,9 @@ interface MazeLevelProps {
   score: number;
   onScoreUpdate: (newScore: number) => void;
   onGameReset: () => void;
+  difficulty?: 'easy' | 'normal' | 'hard';
+  variant?: 'normal' | 'hard';
+  stageNumber?: number;
 }
 
 /**
@@ -18,9 +21,9 @@ interface MazeLevelProps {
  * Controls: Arrow keys or WASD to move through the maze, or touch buttons on mobile
  * No time limit - explore at your own pace!
  */
-function MazeLevel({ score, onScoreUpdate, onGameReset }: MazeLevelProps) {
+function MazeLevel({ score, onScoreUpdate, onGameReset, difficulty: _difficulty = 'normal', variant = 'normal', stageNumber = 2 }: MazeLevelProps) {
   // Player starting position (inside Bangladesh map)
-  const [playerPosition, setPlayerPosition] = useState({ x: 300, y: 250 });
+  const [playerPosition, setPlayerPosition] = useState({ x: 400, y: 350 });
 
   // Track items collected in this level
   const [levelScore, setLevelScore] = useState(0);
@@ -44,13 +47,17 @@ function MazeLevel({ score, onScoreUpdate, onGameReset }: MazeLevelProps) {
     setLevelComplete(true);
   };
 
-  // Check if level is complete (20 items collected OR destination reached)
+  // Check if level is complete (destination reached when score target is hit)
+  // Each stage now requires 10 points per the config system
   useEffect(() => {
-    if ((score >= 20 || levelComplete) && prevScoreRef.current < 20) {
+    // Calculate stage target based on stage number (each stage = 10 points)
+    const stageTarget = stageNumber * 10;
+
+    if ((score >= stageTarget || levelComplete) && prevScoreRef.current < stageTarget) {
       setTimeout(() => setShouldComplete(true), 0);
     }
     prevScoreRef.current = score;
-  }, [score, levelComplete]);
+  }, [score, levelComplete, stageNumber]);
 
   // Handle completion state update
   useEffect(() => {
@@ -58,17 +65,18 @@ function MazeLevel({ score, onScoreUpdate, onGameReset }: MazeLevelProps) {
       setTimeout(() => {
         setLevelComplete(true);
         setShouldComplete(false);
-        // Automatically advance to Level 3 when reaching 20 points
-        if (score < 20) {
-          onScoreUpdate(20);
+        // Ensure we're at the stage target score
+        const stageTarget = stageNumber * 10;
+        if (score < stageTarget) {
+          onScoreUpdate(stageTarget);
         }
       }, 0);
     }
-  }, [shouldComplete, score, onScoreUpdate]);
+  }, [shouldComplete, score, onScoreUpdate, stageNumber]);
 
   // Handle game reset
   const handleReset = () => {
-    setPlayerPosition({ x: 300, y: 250 });
+    setPlayerPosition({ x: 400, y: 350 });
     setLevelScore(0);
     setLevelComplete(false);
     onGameReset();
@@ -96,9 +104,9 @@ function MazeLevel({ score, onScoreUpdate, onGameReset }: MazeLevelProps) {
       {/* Score and Level Display */}
       <div className="flex justify-around items-center mb-8 bg-green-950 bg-opacity-70 rounded-lg p-6 backdrop-blur-sm border-2 border-green-500">
         <div className="text-center">
-          <p className="text-green-300 text-sm font-semibold mb-1">LEVEL 2</p>
+          <p className="text-green-300 text-sm font-semibold mb-1">STAGE {stageNumber}</p>
           <p className="text-3xl font-bold text-emerald-400 drop-shadow-lg">
-            Bangladesh Map
+            {variant === 'hard' ? 'Hard Maze' : 'Bangladesh Map'}
           </p>
         </div>
         <div className="h-16 w-1 bg-gradient-to-b from-green-500 to-transparent"></div>
@@ -166,6 +174,7 @@ function MazeLevel({ score, onScoreUpdate, onGameReset }: MazeLevelProps) {
             onPlayerPositionChange={setPlayerPosition}
             onCollectibleFound={handleCollectibleFound}
             onDestinationReached={handleDestinationReached}
+            variant={variant}
           />
         </div>
       ) : (

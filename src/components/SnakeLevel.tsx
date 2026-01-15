@@ -6,6 +6,7 @@ interface SnakeLevelProps {
     score: number;
     onScoreUpdate: (newScore: number) => void;
     onGameReset: () => void;
+    difficulty?: 'easy' | 'normal' | 'hard';
 }
 
 /**
@@ -18,7 +19,7 @@ interface SnakeLevelProps {
  * 3. Reach 30 total points to complete the game
  * Controls: Arrow keys or WASD to move, or tap on-screen directional buttons
  */
-function SnakeLevel({ score, onScoreUpdate, onGameReset }: SnakeLevelProps) {
+function SnakeLevel({ score, onScoreUpdate, onGameReset, difficulty = 'normal' }: SnakeLevelProps) {
     const [levelScore, setLevelScore] = useState(0);
     const [gameActive, setGameActive] = useState(true);
     const [gameOver, setGameOver] = useState(false);
@@ -150,19 +151,20 @@ function SnakeLevel({ score, onScoreUpdate, onGameReset }: SnakeLevelProps) {
                     key={gameKey}
                     onFoodEaten={handleFoodEaten}
                     onGameOver={handleGameOver}
+                    difficulty={difficulty}
                 />
             )}
             {/* Instructions */}
             {!gameOver && (
-               <div>
-                <MobileControls
+                <div>
+                    <MobileControls
                         onUp={handleMoveUp}
                         onDown={handleMoveDown}
                         onLeft={handleMoveLeft}
                         onRight={handleMoveRight}
                         label="Use arrow buttons to control the snake"
                     />
-               </div>
+                </div>
             )}
             {/* Progress indicator for level completion */}
             {!gameOver && score >= 30 && (

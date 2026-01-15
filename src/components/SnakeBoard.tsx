@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 interface SnakeBoardProps {
     onFoodEaten: () => void;
     onGameOver: () => void;
+    difficulty?: 'easy' | 'normal' | 'hard';
 }
 
 export interface Position {
@@ -12,7 +13,6 @@ export interface Position {
 
 const BOARD_WIDTH = 15;
 const BOARD_HEIGHT = 15;
-const GAME_SPEED = 250; // milliseconds
 
 /**
  * SnakeBoard Component
@@ -20,7 +20,11 @@ const GAME_SPEED = 250; // milliseconds
  * Uses a 15x15 grid-based board.
  * Supports both keyboard and mobile touch controls.
  */
-function SnakeBoard({ onFoodEaten, onGameOver }: SnakeBoardProps) {
+function SnakeBoard({ onFoodEaten, onGameOver, difficulty = 'normal' }: SnakeBoardProps) {
+    // Adjust game speed based on difficulty
+    // Hard: 150ms (faster), Normal: 250ms, Easy: 350ms (slower)
+    const GAME_SPEED = difficulty === 'hard' ? 150 : difficulty === 'easy' ? 350 : 250;
+
     // Snake state: array of positions from head to tail
     const [snake, setSnake] = useState<Position[]>([
         { x: 7, y: 7 },
