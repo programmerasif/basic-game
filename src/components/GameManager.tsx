@@ -123,7 +123,7 @@ function GameManager() {
             {/* Global Header */}
             <div className="text-center mb-8">
               <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-lg">
-                🎮 Multi-Level Game Challenge 🎮
+                🎮 গুপ্ত ধর 🎮
               </h1>
               {gameStarted && (
                 <div className="flex justify-center gap-8 mb-6 bg-green-950 bg-opacity-70 rounded-lg p-4 backdrop-blur-sm border-2 border-green-500">
@@ -154,7 +154,7 @@ function GameManager() {
               <div className="text-center">
                 <div className="bg-green-950 bg-opacity-60 rounded-2xl p-10 backdrop-blur-sm mb-8 border-2 border-green-500">
                   <h2 className="text-3xl font-bold text-white mb-6">
-                    Welcome to the Adventure!
+                    গুপ্ত ধর গেম-এ আপনাকে স্বাগতম
                   </h2>
                   <div className="space-y-4 text-left max-w-md mx-auto text-green-200 mb-8">
                     <div>
@@ -220,9 +220,9 @@ function GameManager() {
             )}
 
             {/* Footer */}
-            <p className="text-center text-green-400 text-xs mt-8 font-medium">
-              © 2026 hit-the-hade | Designed & Developed by <a href="https://mntechdigital.com/" className="underline">MNTECH DIGITAL</a>
-            </p>
+            {/* <p className="text-center text-green-400 text-xs mt-8 font-medium">
+              © 2026 hit-the-hade | Designed & Developed by <a href="" className="underline">Team</a>
+            </p> */}
           </>
         )}
       </div>
