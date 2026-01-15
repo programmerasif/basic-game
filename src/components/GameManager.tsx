@@ -107,7 +107,7 @@ function GameManager() {
               </p>
               <div className="space-y-2 sm:space-y-3 text-left max-w-2xl mx-auto text-white mb-6 sm:mb-10 bg-green-900 bg-opacity-60 rounded-xl p-4 sm:p-6 border-2 border-green-400">
                 <p className="text-sm sm:text-base md:text-lg">✅ Level 1: Whack-a-Mole - Mastered!</p>
-                <p className="text-sm sm:text-base md:text-lg">✅ Level 2: Maze Adventure - Conquered!</p>
+                <p className="text-sm sm:text-base md:text-lg">✅ Level 2: Bangladesh Map - Conquered!</p>
                 <p className="text-sm sm:text-base md:text-lg">✅ Level 3: Snake Game - Completed!</p>
               </div>
               <button
@@ -168,10 +168,10 @@ function GameManager() {
                     </div>
                     <div>
                       <h3 className="text-xl font-bold text-white mb-2">
-                        🏰 Level 2: Maze Adventure
+                        🏰 Level 2: Bangladesh Map Adventure
                       </h3>
                       <p className="text-sm">
-                        Navigate the maze with arrow keys or WASD and collect items
+                        Navigate inside the Bangladesh map shape and collect items
                         to increase your score to 20!
                       </p>
                     </div>

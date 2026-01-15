@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import MazeGrid from "./MazeGrid";
+import BangladeshMazeGrid from "./BangladeshMazeGrid";
 import MobileControls from "./MobileControls";
-import type { Position } from "./Player";
 
 interface MazeLevelProps {
   score: number;
@@ -9,24 +8,19 @@ interface MazeLevelProps {
   onGameReset: () => void;
 }
 
-const MAZE_SIZE = 14; // Must match MazeGrid MAZE_SIZE
-
 /**
  * MazeLevel Component
  * Level 2: Maze Adventure game
  * Player navigates a procedurally generated maze with walls and paths.
  * Objectives:
- * 1. Collect items scattered throughout the maze (💰 🍎 🏠 ⭐ 💎)
- * 2. Reach the destination castle (🏰) at bottom-right to complete the level
+ * 1. Collect items scattered throughout the maze (� � � ⭐ 💎)
+ * 2. Reach the destination castle (�) at bottom-right to complete the level
  * Controls: Arrow keys or WASD to move through the maze, or touch buttons on mobile
  * No time limit - explore at your own pace!
  */
 function MazeLevel({ score, onScoreUpdate, onGameReset }: MazeLevelProps) {
-  // Player starting position (first inner cell after boundary, top-left inner area)
-  const [playerPosition, setPlayerPosition] = useState<Position>({
-    row: 1,
-    col: 1,
-  });
+  // Player starting position (inside Bangladesh map)
+  const [playerPosition, setPlayerPosition] = useState({ x: 300, y: 250 });
 
   // Track items collected in this level
   const [levelScore, setLevelScore] = useState(0);
@@ -34,17 +28,9 @@ function MazeLevel({ score, onScoreUpdate, onGameReset }: MazeLevelProps) {
   // Track if level is completed
   const [levelComplete, setLevelComplete] = useState(false);
 
-  // Track maze grid for wall collision detection
-  const [mazeGrid, setMazeGrid] = useState<boolean[][]>([]);
-
   // Use ref to track previous score
   const prevScoreRef = useRef(0);
   const [shouldComplete, setShouldComplete] = useState(false);
-
-  // Handle maze grid updates from MazeGrid
-  const handleMazeGridUpdate = useCallback((grid: boolean[][]) => {
-    setMazeGrid(grid);
-  }, []);
 
   // Handle collectible collection
   const handleCollectibleFound = () => {
@@ -59,79 +45,51 @@ function MazeLevel({ score, onScoreUpdate, onGameReset }: MazeLevelProps) {
   };
 
   // Check if level is complete (20 items collected OR destination reached)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if ((score >= 20 || levelComplete) && prevScoreRef.current < 20) {
-      setShouldComplete(true);
+      setTimeout(() => setShouldComplete(true), 0);
     }
     prevScoreRef.current = score;
   }, [score, levelComplete]);
 
   // Handle completion state update
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (shouldComplete) {
-      setLevelComplete(true);
-      setShouldComplete(false);
-      // Automatically advance to Level 3 when reaching 20 points
-      if (score < 20) {
-        onScoreUpdate(20);
-      }
+      setTimeout(() => {
+        setLevelComplete(true);
+        setShouldComplete(false);
+        // Automatically advance to Level 3 when reaching 20 points
+        if (score < 20) {
+          onScoreUpdate(20);
+        }
+      }, 0);
     }
   }, [shouldComplete, score, onScoreUpdate]);
 
   // Handle game reset
   const handleReset = () => {
-    setPlayerPosition({ row: 1, col: 1 }); // Reset to first inner position (not on boundary)
+    setPlayerPosition({ x: 300, y: 250 });
     setLevelScore(0);
     setLevelComplete(false);
     onGameReset();
   };
 
-  // Mobile control handlers - with wall collision detection
+  // Mobile control handlers - passed to MobileControls
   const handleMoveUp = useCallback(() => {
-    setPlayerPosition((prev) => {
-      const newRow = Math.max(0, prev.row - 1);
-      // Check if the new position is a valid path (not a wall)
-      if (mazeGrid[newRow] && mazeGrid[newRow][prev.col]) {
-        return { ...prev, row: newRow };
-      }
-      return prev; // Don't move if hitting a wall
-    });
-  }, [mazeGrid]);
+    setPlayerPosition((prev) => ({ ...prev, y: prev.y - 15 }));
+  }, []);
 
   const handleMoveDown = useCallback(() => {
-    setPlayerPosition((prev) => {
-      const newRow = Math.min(MAZE_SIZE - 1, prev.row + 1);
-      // Check if the new position is a valid path (not a wall)
-      if (mazeGrid[newRow] && mazeGrid[newRow][prev.col]) {
-        return { ...prev, row: newRow };
-      }
-      return prev; // Don't move if hitting a wall
-    });
-  }, [mazeGrid]);
+    setPlayerPosition((prev) => ({ ...prev, y: prev.y + 15 }));
+  }, []);
 
   const handleMoveLeft = useCallback(() => {
-    setPlayerPosition((prev) => {
-      const newCol = Math.max(0, prev.col - 1);
-      // Check if the new position is a valid path (not a wall)
-      if (mazeGrid[prev.row] && mazeGrid[prev.row][newCol]) {
-        return { ...prev, col: newCol };
-      }
-      return prev; // Don't move if hitting a wall
-    });
-  }, [mazeGrid]);
+    setPlayerPosition((prev) => ({ ...prev, x: prev.x - 15 }));
+  }, []);
 
   const handleMoveRight = useCallback(() => {
-    setPlayerPosition((prev) => {
-      const newCol = Math.min(MAZE_SIZE - 1, prev.col + 1);
-      // Check if the new position is a valid path (not a wall)
-      if (mazeGrid[prev.row] && mazeGrid[prev.row][newCol]) {
-        return { ...prev, col: newCol };
-      }
-      return prev; // Don't move if hitting a wall
-    });
-  }, [mazeGrid]);
+    setPlayerPosition((prev) => ({ ...prev, x: prev.x + 15 }));
+  }, []);
 
   return (
     <div className="w-full">
@@ -140,7 +98,7 @@ function MazeLevel({ score, onScoreUpdate, onGameReset }: MazeLevelProps) {
         <div className="text-center">
           <p className="text-green-300 text-sm font-semibold mb-1">LEVEL 2</p>
           <p className="text-3xl font-bold text-emerald-400 drop-shadow-lg">
-            Maze Adventure
+            Bangladesh Map
           </p>
         </div>
         <div className="h-16 w-1 bg-gradient-to-b from-green-500 to-transparent"></div>
@@ -203,12 +161,11 @@ function MazeLevel({ score, onScoreUpdate, onGameReset }: MazeLevelProps) {
       {/* Maze Game Grid */}
       {!levelComplete ? (
         <div className="mb-8">
-          <MazeGrid
+          <BangladeshMazeGrid
             playerPosition={playerPosition}
             onPlayerPositionChange={setPlayerPosition}
             onCollectibleFound={handleCollectibleFound}
             onDestinationReached={handleDestinationReached}
-            onMazeGridUpdate={handleMazeGridUpdate}
           />
         </div>
       ) : (
@@ -235,7 +192,7 @@ function MazeLevel({ score, onScoreUpdate, onGameReset }: MazeLevelProps) {
       {/* Instructions and Controls */}
       <div className="bg-green-950 bg-opacity-60 rounded-xl p-6 backdrop-blur-sm mb-8 border-2 border-green-500">
         <h3 className="text-xl font-bold text-white mb-4">
-          📍 Level 2: Maze Adventure
+          📍 Level 2: Bangladesh Map Adventure
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-green-200">
           <div>
@@ -247,13 +204,14 @@ function MazeLevel({ score, onScoreUpdate, onGameReset }: MazeLevelProps) {
               <li>
                 • <span className="text-lime-400">W A S D</span> Alternative
               </li>
-              <li>• Avoid walking into walls</li>
+              <li>• Stay within Bangladesh borders!</li>
             </ul>
           </div>
           <div>
             <p className="font-semibold text-white mb-2">🎯 Objectives</p>
             <ul className="text-sm space-y-1">
-              <li>• Collect scattered items 💰 🍎 🏠 ⭐ 💎</li>
+              <li>• Navigate inside the Bangladesh map</li>
+              <li>• Collect items 💰 🍎 🏠 ⭐ 💎</li>
               <li>
                 •{" "}
                 <span className="text-lime-300 font-bold">
@@ -264,14 +222,12 @@ function MazeLevel({ score, onScoreUpdate, onGameReset }: MazeLevelProps) {
             </ul>
           </div>
           <div>
-            <p className="font-semibold text-white mb-2">📊 Maze Features</p>
+            <p className="font-semibold text-white mb-2">📊 Map Features</p>
             <ul className="text-sm space-y-1">
-              <li>• Start: Top-left 🧑</li>
-              <li>• Goal: Bottom-right 🏰</li>
-              <li>• More walls = harder challenge</li>
+              <li>• Real Bangladesh map boundary</li>
+              <li>• Items spawn inside the map</li>
+              <li>• Castle destination within borders</li>
             </ul>
-
-
           </div>
         </div>
       </div>
@@ -295,10 +251,11 @@ function MazeLevel({ score, onScoreUpdate, onGameReset }: MazeLevelProps) {
       {/* Tips Section */}
       <div className="mt-8 bg-gradient-to-r from-green-900 to-emerald-900 bg-opacity-50 rounded-lg p-4 backdrop-blur-sm border-2 border-green-500">
         <p className="text-sm text-green-200">
-          💡 <span className="font-semibold">How to Win:</span> Collect{" "}
+          💡 <span className="font-semibold">How to Win:</span> Navigate inside
+          the Bangladesh map and collect{" "}
           <span className="text-lime-300 font-bold">20 items</span> to
-          complete the level! You can also reach the castle 🏰 to finish the
-          level. No time limit - explore and collect at your own pace!
+          complete the level! You can also reach the castle 🏰 to finish. Stay
+          within the borders and explore at your own pace!
         </p>
       </div>
     </div>
