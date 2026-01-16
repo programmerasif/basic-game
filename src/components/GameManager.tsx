@@ -26,7 +26,7 @@ const STAGE_CONFIGS: StageConfig[] = [
     name: 'ধর্ষক গুপ্ত',
     description: '১০ টি ধর্ষক গুপ্তকে ধরলে, পরের স্টেজ হবে খুনি গুপ্ত।',
     targetPoints: 10,
-    difficulty: 'normal'
+    difficulty: 'easy'  // Changed from 'normal' to 'easy' for first stage
   },
   {
     id: 2,

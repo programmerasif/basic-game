@@ -26,7 +26,8 @@ function WhackAMoleLevel({
   difficulty = 'normal',
 }: WhackAMoleLevelProps) {
   // Adjust speed based on difficulty
-  const moleSpeed = difficulty === 'hard' ? 600 : difficulty === 'easy' ? 1200 : 900;
+  // Easier: longer time for moles to stay visible (slower = easier)
+  const moleSpeed = difficulty === 'hard' ? 600 : difficulty === 'easy' ? 1800 : 1200;
 
   const [gameState, setGameState] = useState<LevelGameState>({
     timeLeft: 30,
@@ -69,8 +70,8 @@ function WhackAMoleLevel({
     changeMole();
 
     // Change mole position at intervals based on difficulty
-    // Hard: 600ms, Normal: 900ms, Easy: 1200ms with some randomness
-    const intervalDuration = moleSpeed + Math.random() * 300;
+    // Hard: 600ms, Normal: 1200ms, Easy: 1800ms with some randomness for variety
+    const intervalDuration = moleSpeed + Math.random() * 500;
     const moleInterval = setInterval(changeMole, intervalDuration);
 
     return () => clearInterval(moleInterval);
