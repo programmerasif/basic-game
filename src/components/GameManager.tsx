@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import WhackAMoleLevel from "./WhackAMoleLevel";
 import MazeLevel from "./MazeLevel";
 import SnakeLevel from "./SnakeLevel";
+import StageCompleteModal from "./StageCompleteModal";
 
 interface SharedGameState {
   score: number;
@@ -24,16 +25,16 @@ const STAGE_CONFIGS: StageConfig[] = [
     id: 1,
     type: 'whack-a-mole',
     name: 'ধর্ষক গুপ্ত',
-    description: '১০ টি ধর্ষক গুপ্তকে ধরলে, পরের স্টেজ হবে খুনি গুপ্ত।',
-    targetPoints: 10,
+    description: '৫ টি ধর্ষক গুপ্তকে ধরলে, পরের স্টেজ হবে খুনি গুপ্ত।',
+    targetPoints: 5,
     difficulty: 'easy'  // Changed from 'normal' to 'easy' for first stage
   },
   {
     id: 2,
     type: 'maze',
     name: 'খুনি গুপ্ত',
-    description: '১০ টি খুনি গুপ্তকে ধরলে, পরের স্টেজ হবে রাজাকার গুপ্ত।',
-    targetPoints: 10,
+    description: '৫ টি খুনি গুপ্তকে ধরলে, পরের স্টেজ হবে রাজাকার গুপ্ত।',
+    targetPoints: 5,
     difficulty: 'normal',
     mazeVariant: 'normal'
   },
@@ -41,16 +42,16 @@ const STAGE_CONFIGS: StageConfig[] = [
     id: 3,
     type: 'snake',
     name: 'রাজাকার গুপ্ত',
-    description: '১০ টি রাজাকার গুপ্তকে ধরলে, পরের স্টেজ হবে রগকাটা-সন্ত্রাসি গুপ্ত।',
-    targetPoints: 10,
+    description: '৫ টি রাজাকার গুপ্তকে ধরলে, পরের স্টেজ হবে রগকাটা-সন্ত্রাসি গুপ্ত।',
+    targetPoints: 5,
     difficulty: 'normal'
   },
   {
     id: 4,
     type: 'maze-hard',
     name: 'রগকাটা-সন্ত্রাসি গুপ্ত',
-    description: '১০ টি রগকাটা-সন্ত্রাসি গুপ্তকে ধরলে, পরের স্টেজ হবে চাঁদাবাজ গুপ্ত।',
-    targetPoints: 10,
+    description: '৫ টি রগকাটা-সন্ত্রাসি গুপ্তকে ধরলে, পরের স্টেজ হবে চাঁদাবাজ গুপ্ত।',
+    targetPoints: 5,
     difficulty: 'hard',
     mazeVariant: 'hard'
   },
@@ -58,8 +59,8 @@ const STAGE_CONFIGS: StageConfig[] = [
     id: 5,
     type: 'whack-a-mole',
     name: 'চাঁদাবাজ গুপ্ত',
-    description: '১০ টি চাঁদাবাজ গুপ্তকে ধরলে win করে গেম শেষ করুন।',
-    targetPoints: 10,
+    description: '৫ টি চাঁদাবাজ গুপ্তকে ধরলে win করে গেম শেষ করুন।',
+    targetPoints: 5,
     difficulty: 'hard'
   }
 ];
@@ -82,6 +83,14 @@ function GameManager() {
   const [gameCompleted, setGameCompleted] = useState(false);
   const [shouldAdvanceLevel, setShouldAdvanceLevel] = useState(false);
   const [nextLevel, setNextLevel] = useState(1);
+  const [showStageCompleteModal, setShowStageCompleteModal] = useState(false);
+  const [completedStageInfo, setCompletedStageInfo] = useState<{
+    currentStage: number;
+    nextStage: number;
+    stageName: string;
+    nextStageName: string;
+    stageScore: number;
+  } | null>(null);
 
   // Use refs to track previous values
   const prevScoreRef = useRef(0);
@@ -101,14 +110,22 @@ function GameManager() {
       // Check if we've reached the threshold for advancing to next stage
       if (currentScore >= cumulativeScore && currentStage === stageConfig.id && prevScore < cumulativeScore) {
         if (stageConfig.id < TOTAL_STAGES) {
-          // Advance to next stage
+          // Advance to next stage - show modal first
+          const nextStageConfig = STAGE_CONFIGS[stageConfig.id];
           setTimeout(() => {
+            setCompletedStageInfo({
+              currentStage: stageConfig.id,
+              nextStage: stageConfig.id + 1,
+              stageName: stageConfig.name,
+              nextStageName: nextStageConfig.name,
+              stageScore: stageConfig.targetPoints,
+            });
+            setShowStageCompleteModal(true);
             setNextLevel(stageConfig.id + 1);
-            setShouldAdvanceLevel(true);
-          }, 0);
+          }, 500); // Small delay for better UX
         } else {
           // Game completed (reached max score on final stage)
-          setTimeout(() => setGameCompleted(true), 0);
+          setTimeout(() => setGameCompleted(true), 500);
         }
         break;
       }
@@ -116,6 +133,13 @@ function GameManager() {
 
     prevScoreRef.current = currentScore;
   }, [sharedState.score, sharedState.currentStage]);
+
+  // Handle continuing to next stage from modal
+  const handleContinueToNextStage = () => {
+    setShowStageCompleteModal(false);
+    setCompletedStageInfo(null);
+    setShouldAdvanceLevel(true);
+  };
 
   // Handle stage advancement when flag is set
   useEffect(() => {
@@ -126,7 +150,7 @@ function GameManager() {
           currentStage: nextLevel,
         }));
         setShouldAdvanceLevel(false);
-      }, 0);
+      }, 100);
     }
   }, [shouldAdvanceLevel, nextLevel, sharedState.currentStage]);
 
@@ -155,6 +179,21 @@ function GameManager() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-green-950 to-slate-900 flex items-center justify-center p-4">
+      {/* Stage Complete Modal */}
+      {completedStageInfo && (
+        <StageCompleteModal
+          isOpen={showStageCompleteModal}
+          currentStage={completedStageInfo.currentStage}
+          nextStage={completedStageInfo.nextStage}
+          totalStages={TOTAL_STAGES}
+          stageScore={completedStageInfo.stageScore}
+          totalScore={sharedState.score}
+          stageName={completedStageInfo.stageName}
+          nextStageName={completedStageInfo.nextStageName}
+          onContinue={handleContinueToNextStage}
+        />
+      )}
+
       <div className="w-full max-w-4xl">
         {/* Game Completion Screen */}
         {gameCompleted ? (
