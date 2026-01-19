@@ -18,7 +18,7 @@ interface SharedGameState {
 /**
  * GameManager Component
  * Manages overall game flow, state transitions, and level progression.
- * Handles progression: Level 1 (10 pts) → Level 2 (20 pts) → Level 3 (30 pts = completion)
+ * Handles progression: Level 1 (5 pts) → Level 2 (10 pts) → Level 3 (15 pts) → Level 4 (20 pts) → Level 5 (25 pts = completion)
  */
 function GameManager() {
   const [sharedState, setSharedState] = useState<SharedGameState>({
@@ -111,39 +111,39 @@ function GameManager() {
     const currentLevel = sharedState.currentLevel;
     const prevScore = prevScoreRef.current;
 
-    // Level 1 → Level 2 at 10 points
-    if (currentScore >= 10 && currentLevel === 1 && prevScore < 10) {
+    // Level 1 → Level 2 at 5 points
+    if (currentScore >= 5 && currentLevel === 1 && prevScore < 5) {
       // eslint-disable-next-line react-hooks/exhaustive-deps
       setNextLevel(2);
       setShouldAdvanceLevel(true);
-      setCompletedLevelScore(10);
+      setCompletedLevelScore(5);
       setShowLevelCompleteModal(true);
     }
-    // Level 2 → Level 3 at 20 points
-    else if (currentScore >= 20 && currentLevel === 2 && prevScore < 20) {
+    // Level 2 → Level 3 at 10 points
+    else if (currentScore >= 10 && currentLevel === 2 && prevScore < 10) {
       // eslint-disable-next-line react-hooks/exhaustive-deps
       setNextLevel(3);
       setShouldAdvanceLevel(true);
-      setCompletedLevelScore(10);
+      setCompletedLevelScore(5);
       setShowLevelCompleteModal(true);
     }
-    // Level 3 → Level 4 at 30 points
-    else if (currentScore >= 30 && currentLevel === 3 && prevScore < 30) {
+    // Level 3 → Level 4 at 15 points
+    else if (currentScore >= 15 && currentLevel === 3 && prevScore < 15) {
       setNextLevel(4);
       setShouldAdvanceLevel(true);
-      setCompletedLevelScore(10);
+      setCompletedLevelScore(5);
       setShowLevelCompleteModal(true);
     }
-    // Level 4 → Level 5 at 40 points
-    else if (currentScore >= 40 && currentLevel === 4 && prevScore < 40) {
+    // Level 4 → Level 5 at 20 points
+    else if (currentScore >= 20 && currentLevel === 4 && prevScore < 20) {
       setNextLevel(5);
       setShouldAdvanceLevel(true);
-      setCompletedLevelScore(10);
+      setCompletedLevelScore(5);
       setShowLevelCompleteModal(true);
     }
-    // Check for game completion (50 points)
-    else if (currentScore >= 50 && currentLevel === 5) {
-      setCompletedLevelScore(10);
+    // Check for game completion (25 points)
+    else if (currentScore >= 25 && currentLevel === 5) {
+      setCompletedLevelScore(5);
       setShowLevelCompleteModal(true);
     }
 
@@ -412,11 +412,11 @@ function GameManager() {
                 score={sharedState.score}
                 onScoreUpdate={handleScoreUpdate}
                 onLevelComplete={() => {
-                  // Level complete when reaching 10 points
+                  // Level complete when reaching 5 points
                   // Transition handled by useEffect
                 }}
                 levelNumber={1}
-                targetScore={10}
+                targetScore={5}
                 levelName="ধর্ষক গুপ্ত"
                 nextLevelName="খুনি গুপ্ত"
               />
@@ -428,7 +428,7 @@ function GameManager() {
                 onScoreUpdate={handleScoreUpdate}
                 onGameReset={resetGame}
                 levelNumber={2}
-                targetScore={20}
+                targetScore={10}
                 levelName="খুনি গুপ্ত"
               />
             ) : sharedState.currentLevel === 3 ? (
@@ -439,7 +439,7 @@ function GameManager() {
                 onScoreUpdate={handleScoreUpdate}
                 onGameReset={resetGame}
                 levelNumber={3}
-                targetScore={30}
+                targetScore={15}
                 levelName="রাজাকার গুপ্ত"
               />
             ) : sharedState.currentLevel === 4 ? (
@@ -450,7 +450,7 @@ function GameManager() {
                 onScoreUpdate={handleScoreUpdate}
                 onGameReset={resetGame}
                 levelNumber={4}
-                targetScore={40}
+                targetScore={20}
                 levelName="রগকাটা-সন্ত্রাসি গুপ্ত"
               />
             ) : (
@@ -460,11 +460,11 @@ function GameManager() {
                 score={sharedState.score}
                 onScoreUpdate={handleScoreUpdate}
                 onLevelComplete={() => {
-                  // Level complete when reaching 50 points
+                  // Level complete when reaching 25 points
                   // Transition handled by useEffect
                 }}
                 levelNumber={5}
-                targetScore={50}
+                targetScore={25}
                 levelName="চাঁদাবাজ গুপ্ত"
                 nextLevelName="গেম শেষ!"
               />

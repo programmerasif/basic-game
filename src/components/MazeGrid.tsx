@@ -373,7 +373,7 @@ function MazeGrid({
   }, [playerPosition, collectibles, mazeGrid, onCollectibleFound, generateCollectibles]);
 
   return (
-    <div className="relative w-full h-[65vh] md:h-auto md:aspect-[1/1.15] bg-gradient-to-br from-green-800 via-green-700 to-emerald-800 rounded-none md:rounded-2xl overflow-hidden shadow-2xl border-0 md:border-4 border-green-500">
+    <div className="relative w-full h-[65vh] md:h-auto md:aspect-[1/1.15] bg-[#E8FDEF] rounded-none md:rounded-2xl overflow-hidden shadow-2xl border-0 md:border-4 border-[#E8FDEF]">
       {/* Grid cell-based maze with thinner walls */}
       <div
         className="absolute inset-0 grid gap-0 p-2 md:p-14"
