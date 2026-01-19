@@ -246,6 +246,67 @@ function MazeGrid({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isRunning]);
 
+  // Touch/swipe controls for mobile
+  useEffect(() => {
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchEndX = 0;
+    let touchEndY = 0;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      touchEndX = e.touches[0].clientX;
+      touchEndY = e.touches[0].clientY;
+    };
+
+    const handleTouchEnd = () => {
+      const deltaX = touchEndX - touchStartX;
+      const deltaY = touchEndY - touchStartY;
+      const minSwipeDistance = 15; // Reduced for faster response
+
+      // Only process if there was actual movement
+      if (Math.abs(deltaX) < minSwipeDistance && Math.abs(deltaY) < minSwipeDistance) {
+        return;
+      }
+
+      // Determine swipe direction based on larger delta
+      if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        // Horizontal swipe
+        if (deltaX > 0) {
+          setDirection('right');
+        } else {
+          setDirection('left');
+        }
+      } else {
+        // Vertical swipe
+        if (deltaY > 0) {
+          setDirection('down');
+        } else {
+          setDirection('up');
+        }
+      }
+
+      // Start running if paused
+      if (!isRunning) {
+        setIsRunning(true);
+      }
+    };
+
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
+    window.addEventListener('touchend', handleTouchEnd);
+
+    return () => {
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, [isRunning]);
+
   // Auto-run movement effect
   useEffect(() => {
     if (!isRunning || mazeGrid.length === 0) return;
@@ -317,10 +378,10 @@ function MazeGrid({
   }, [playerPosition, collectibles, mazeGrid, onCollectibleFound, generateCollectibles]);
 
   return (
-    <div className="relative w-full aspect-[1/1.15] bg-gradient-to-br from-green-800 via-green-700 to-emerald-800 rounded-2xl overflow-hidden shadow-2xl border-4 border-green-500">
+    <div className="relative w-full h-[65vh] md:h-auto md:aspect-[1/1.15] bg-gradient-to-br from-green-800 via-green-700 to-emerald-800 rounded-none md:rounded-2xl overflow-hidden shadow-2xl border-0 md:border-4 border-green-500">
       {/* Grid cell-based maze with thinner walls */}
       <div
-        className="absolute inset-0 grid gap-0 p-4 md:p-14"
+        className="absolute inset-0 grid gap-0 p-2 md:p-14"
         style={{ gridTemplateColumns: `repeat(${MAZE_SIZE}, 1fr)` }}
       >
         {mazeGrid.map((row, rowIdx) =>
@@ -347,7 +408,7 @@ function MazeGrid({
       {/* Destination marker (goal) - positioned within the padded area */}
       {destination && (
         <div
-          className="absolute inset-0 p-14 pointer-events-none"
+          className="absolute inset-0 p-2 md:p-14 pointer-events-none"
         >
           <div
             className="absolute flex items-center justify-center text-2xl animate-pulse drop-shadow-lg"
@@ -364,7 +425,7 @@ function MazeGrid({
       )}
 
       {/* Collectibles layer - positioned within the padded area */}
-      <div className="absolute inset-0 p-14 pointer-events-none">
+      <div className="absolute inset-0 p-2 md:p-14 pointer-events-none">
         <div className="relative w-full h-full">
           {collectibles.map((collectible) => (
             <div
@@ -385,7 +446,7 @@ function MazeGrid({
 
       {/* Player - positioned within the padded area */}
       {mazeGrid.length > 0 && (
-        <div className="absolute inset-0 p-14 pointer-events-none">
+        <div className="absolute inset-0 p-2 md:p-14 pointer-events-none">
           <div className="relative w-full h-full">
             <div
               className="absolute flex items-center justify-center text-xl transition-all duration-100 animate-pulse"
@@ -402,8 +463,8 @@ function MazeGrid({
         </div>
       )}
 
-      {/* Instructions overlay */}
-      <div className="absolute top-4 right-4 bg-green-950 bg-opacity-90 rounded-xl p-3 text-xs text-green-100 max-w-xs border border-green-500 shadow-lg">
+      {/* Instructions overlay - Hidden on mobile */}
+      <div className="hidden md:block absolute top-4 right-4 bg-green-950 bg-opacity-90 rounded-xl p-3 text-xs text-green-100 max-w-xs border border-green-500 shadow-lg">
         <p className="font-bold text-green-300 mb-1">🎮 Auto-Run Mode:</p>
         <p>🏃 Character runs automatically</p>
         <p>↔️ Press arrows to turn</p>
@@ -416,6 +477,40 @@ function MazeGrid({
       <div className="absolute top-2 right-2 w-8 h-8 border-t-4 border-r-4 border-green-400 rounded-tr-lg opacity-50"></div>
       <div className="absolute bottom-2 left-2 w-8 h-8 border-b-4 border-l-4 border-green-400 rounded-bl-lg opacity-50"></div>
       <div className="absolute bottom-2 right-2 w-8 h-8 border-b-4 border-r-4 border-green-400 rounded-br-lg opacity-50"></div>
+
+      {/* Compact Mobile Direction Buttons */}
+      <div className="absolute bottom-4 left-4 md:hidden">
+        <div className="relative w-24 h-24">
+          {/* Up Button */}
+          <button
+            onTouchStart={(e) => { e.stopPropagation(); setDirection('up'); if (!isRunning) setIsRunning(true); }}
+            className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-green-600 bg-opacity-80 border-2 border-green-400 flex items-center justify-center text-white text-sm font-bold active:bg-green-500 active:scale-95 shadow-lg"
+          >
+            ▲
+          </button>
+          {/* Down Button */}
+          <button
+            onTouchStart={(e) => { e.stopPropagation(); setDirection('down'); if (!isRunning) setIsRunning(true); }}
+            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-green-600 bg-opacity-80 border-2 border-green-400 flex items-center justify-center text-white text-sm font-bold active:bg-green-500 active:scale-95 shadow-lg"
+          >
+            ▼
+          </button>
+          {/* Left Button */}
+          <button
+            onTouchStart={(e) => { e.stopPropagation(); setDirection('left'); if (!isRunning) setIsRunning(true); }}
+            className="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-green-600 bg-opacity-80 border-2 border-green-400 flex items-center justify-center text-white text-sm font-bold active:bg-green-500 active:scale-95 shadow-lg"
+          >
+            ◀
+          </button>
+          {/* Right Button */}
+          <button
+            onTouchStart={(e) => { e.stopPropagation(); setDirection('right'); if (!isRunning) setIsRunning(true); }}
+            className="absolute right-0 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-green-600 bg-opacity-80 border-2 border-green-400 flex items-center justify-center text-white text-sm font-bold active:bg-green-500 active:scale-95 shadow-lg"
+          >
+            ▶
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

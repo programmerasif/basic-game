@@ -1,15 +1,18 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import MazeGrid from "./MazeGrid";
-import MobileControls from "./MobileControls";
+// import MobileControls from "./MobileControls";
 import type { Position } from "./Player";
 
 interface MazeLevelProps {
   score: number;
   onScoreUpdate: (newScore: number) => void;
   onGameReset: () => void;
+  levelNumber?: number;
+  targetScore?: number;
+  levelName?: string;
 }
 
-const MAZE_SIZE = 30; // Must match MazeGrid MAZE_SIZE
+// const MAZE_SIZE = 30; Must match MazeGrid MAZE_SIZE
 
 /**
  * MazeLevel Component
@@ -21,7 +24,7 @@ const MAZE_SIZE = 30; // Must match MazeGrid MAZE_SIZE
  * Controls: Arrow keys or WASD to move through the maze, or touch buttons on mobile
  * No time limit - explore at your own pace!
  */
-function MazeLevel({ score, onScoreUpdate, onGameReset }: MazeLevelProps) {
+function MazeLevel({ score, onScoreUpdate, onGameReset, levelNumber = 2, targetScore = 20, levelName = "Maze Adventure" }: MazeLevelProps) {
   // Player starting position - on a valid path in the maze (row 0, col 5 is path)
   const [playerPosition, setPlayerPosition] = useState<Position>({
     row: 0,
@@ -36,6 +39,7 @@ function MazeLevel({ score, onScoreUpdate, onGameReset }: MazeLevelProps) {
 
   // Track maze grid for wall collision detection
   const [mazeGrid, setMazeGrid] = useState<boolean[][]>([]);
+  console.log(mazeGrid);
 
   // Use ref to track previous score
   const prevScoreRef = useRef(0);
@@ -58,14 +62,14 @@ function MazeLevel({ score, onScoreUpdate, onGameReset }: MazeLevelProps) {
     setLevelComplete(true);
   };
 
-  // Check if level is complete (20 items collected OR destination reached)
+  // Check if level is complete (target items collected OR destination reached)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    if ((score >= 20 || levelComplete) && prevScoreRef.current < 20) {
+    if ((score >= targetScore || levelComplete) && prevScoreRef.current < targetScore) {
       setShouldComplete(true);
     }
     prevScoreRef.current = score;
-  }, [score, levelComplete]);
+  }, [score, levelComplete, targetScore]);
 
   // Handle completion state update
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -73,12 +77,12 @@ function MazeLevel({ score, onScoreUpdate, onGameReset }: MazeLevelProps) {
     if (shouldComplete) {
       setLevelComplete(true);
       setShouldComplete(false);
-      // Automatically advance to Level 3 when reaching 20 points
-      if (score < 20) {
-        onScoreUpdate(20);
+      // Automatically advance when reaching target points
+      if (score < targetScore) {
+        onScoreUpdate(targetScore);
       }
     }
-  }, [shouldComplete, score, onScoreUpdate]);
+  }, [shouldComplete, score, onScoreUpdate, targetScore]);
 
   // Handle game reset
   const handleReset = () => {
@@ -88,35 +92,57 @@ function MazeLevel({ score, onScoreUpdate, onGameReset }: MazeLevelProps) {
     onGameReset();
   };
 
-  // Mobile control handlers - dispatch keyboard events to change direction
-  const handleMoveUp = useCallback(() => {
-    const upEvent = new KeyboardEvent("keydown", { key: "ArrowUp" });
-    window.dispatchEvent(upEvent);
-  }, []);
+  // // Mobile control handlers - dispatch keyboard events to change direction
+  // const handleMoveUp = useCallback(() => {
+  //   const upEvent = new KeyboardEvent("keydown", { key: "ArrowUp" });
+  //   window.dispatchEvent(upEvent);
+  // }, []);
 
-  const handleMoveDown = useCallback(() => {
-    const downEvent = new KeyboardEvent("keydown", { key: "ArrowDown" });
-    window.dispatchEvent(downEvent);
-  }, []);
+  // const handleMoveDown = useCallback(() => {
+  //   const downEvent = new KeyboardEvent("keydown", { key: "ArrowDown" });
+  //   window.dispatchEvent(downEvent);
+  // }, []);
 
-  const handleMoveLeft = useCallback(() => {
-    const leftEvent = new KeyboardEvent("keydown", { key: "ArrowLeft" });
-    window.dispatchEvent(leftEvent);
-  }, []);
+  // const handleMoveLeft = useCallback(() => {
+  //   const leftEvent = new KeyboardEvent("keydown", { key: "ArrowLeft" });
+  //   window.dispatchEvent(leftEvent);
+  // }, []);
 
-  const handleMoveRight = useCallback(() => {
-    const rightEvent = new KeyboardEvent("keydown", { key: "ArrowRight" });
-    window.dispatchEvent(rightEvent);
-  }, []);
+  // const handleMoveRight = useCallback(() => {
+  //   const rightEvent = new KeyboardEvent("keydown", { key: "ArrowRight" });
+  //   window.dispatchEvent(rightEvent);
+  // }, []);
 
   return (
-    <div className="w-full">
-      {/* Score and Level Display */}
-      <div className="flex justify-around items-center mb-8 bg-green-950 bg-opacity-70 rounded-lg p-6 backdrop-blur-sm border-2 border-green-500">
+    <div className="w-full h-screen md:h-auto overflow-hidden md:overflow-visible flex flex-col">
+      {/* Score and Level Display - Hidden on mobile */}
+      <div className="flex md:hidden justify-around items-center bg-green-950 bg-opacity-70 rounded-lg p-1 backdrop-blur-sm border-2 border-green-500">
+        <p className="text-4xl font-bold text-teal-400 drop-shadow-lg">
+          {levelScore}
+        </p>
+        <p className="text-4xl font-bold text-lime-400 drop-shadow-lg">
+          {score}
+        </p>
+        <div className="h-16 w-1 bg-gradient-to-b from-green-500 to-transparent"></div>
         <div className="text-center">
-          <p className="text-green-300 text-sm font-semibold mb-1">LEVEL 2</p>
+          <p className="text-green-300 text-sm font-semibold mb-1">
+            TOTAL SCORE
+          </p>
+
+        </div>
+        <div className="h-16 w-1 bg-gradient-to-b from-green-500 to-transparent"></div>
+        <div className="text-center">
+          <p className="text-green-300 text-sm font-semibold mb-1">
+            ITEMS FOUND
+          </p>
+
+        </div>
+      </div>
+      <div className="hidden md:flex justify-around items-center mb-8 bg-green-950 bg-opacity-70 rounded-lg p-6 backdrop-blur-sm border-2 border-green-500">
+        <div className="text-center">
+          <p className="text-green-300 text-sm font-semibold mb-1">LEVEL {levelNumber}</p>
           <p className="text-3xl font-bold text-emerald-400 drop-shadow-lg">
-            Maze Adventure
+            {levelName}
           </p>
         </div>
         <div className="h-16 w-1 bg-gradient-to-b from-green-500 to-transparent"></div>
@@ -138,10 +164,9 @@ function MazeLevel({ score, onScoreUpdate, onGameReset }: MazeLevelProps) {
           </p>
         </div>
       </div>
-
-      {/* Level completion status */}
+      {/* Level completion status - Hidden on mobile */}
       {levelComplete && (
-        <div className="mb-8 bg-gradient-to-br from-green-500 via-emerald-500 to-teal-500 rounded-3xl p-10 backdrop-blur-sm border-4 border-green-300 shadow-2xl">
+        <div className="hidden md:block mb-8 bg-gradient-to-br from-green-500 via-emerald-500 to-teal-500 rounded-3xl p-10 backdrop-blur-sm border-4 border-green-300 shadow-2xl">
           <div className="bg-white bg-opacity-10 rounded-2xl p-8 backdrop-blur-sm">
             <div className="flex justify-center mb-6">
               <div className="text-8xl animate-bounce">🏰</div>
@@ -151,8 +176,8 @@ function MazeLevel({ score, onScoreUpdate, onGameReset }: MazeLevelProps) {
             </p>
             <div className="bg-green-900 bg-opacity-40 rounded-xl p-6 mb-6">
               <p className="text-3xl font-bold text-white text-center mb-3">
-                {score >= 20
-                  ? "🌟 You collected 20 items! 🌟"
+                {score >= targetScore
+                  ? `🌟 You collected ${targetScore} items! 🌟`
                   : "👑 You reached the castle! 👑"}
               </p>
               <div className="flex justify-center gap-8 mt-4">
@@ -169,16 +194,16 @@ function MazeLevel({ score, onScoreUpdate, onGameReset }: MazeLevelProps) {
             </div>
             <div className="flex items-center justify-center gap-3 text-2xl text-white font-bold animate-pulse">
               <span>✨</span>
-              <span>Advancing to Level 3: Snake Game</span>
+              <span>Advancing to Level {levelNumber + 1}{levelNumber === 2 ? ": Snake Game" : ": Whack-a-Mole II"}</span>
               <span>✨</span>
             </div>
           </div>
         </div>
       )}
 
-      {/* Maze Game Grid */}
+      {/* Maze Game Grid - Full screen on mobile */}
       {!levelComplete ? (
-        <div className="mb-8">
+        <div className="flex-1 md:flex-none h-full md:h-auto mb-0 md:mb-8 flex items-center justify-center">
           <MazeGrid
             playerPosition={playerPosition}
             onPlayerPositionChange={setPlayerPosition}
@@ -188,7 +213,7 @@ function MazeLevel({ score, onScoreUpdate, onGameReset }: MazeLevelProps) {
           />
         </div>
       ) : (
-        <div className="mb-8 bg-green-900 bg-opacity-70 rounded-2xl p-12 backdrop-blur-sm text-center border-2 border-green-500">
+        <div className="hidden md:block mb-8 bg-green-900 bg-opacity-70 rounded-2xl p-12 backdrop-blur-sm text-center border-2 border-green-500">
           <p className="text-6xl mb-4">🏰</p>
           <p className="text-2xl font-bold text-white mb-4">
             You've reached the castle!
@@ -198,18 +223,9 @@ function MazeLevel({ score, onScoreUpdate, onGameReset }: MazeLevelProps) {
           </p>
         </div>
       )}
-      <div className="w-full">
-        {/* Mobile Controls */}
-        <MobileControls
-          onUp={handleMoveUp}
-          onDown={handleMoveDown}
-          onLeft={handleMoveLeft}
-          onRight={handleMoveRight}
-          label="Use arrow buttons to navigate the maze"
-        />
-      </div>
-      {/* Instructions and Controls */}
-      <div className="bg-green-950 bg-opacity-60 rounded-xl p-6 backdrop-blur-sm mb-8 border-2 border-green-500">
+
+      {/* Instructions and Controls - Hidden on mobile */}
+      <div className="hidden md:block bg-green-950 bg-opacity-60 rounded-xl p-6 backdrop-blur-sm mb-8 border-2 border-green-500">
         <h3 className="text-xl font-bold text-white mb-4">
           📍 Level 2: Maze Adventure
         </h3>
@@ -218,12 +234,12 @@ function MazeLevel({ score, onScoreUpdate, onGameReset }: MazeLevelProps) {
             <p className="font-semibold text-white mb-2">🎮 Controls</p>
             <ul className="text-sm space-y-1">
               <li>
-                • <span className="text-lime-400">↑ ↓ ← →</span> Arrow Keys
+                • <span className="text-lime-400">↑ ↓ ← →</span> Arrow Keys / WASD
               </li>
               <li>
-                • <span className="text-lime-400">W A S D</span> Alternative
+                • <span className="text-lime-400">📱 Swipe</span> on mobile
               </li>
-              <li>• Avoid walking into walls</li>
+              <li>• Character auto-runs, just turn!</li>
             </ul>
           </div>
           <div>
@@ -252,7 +268,7 @@ function MazeLevel({ score, onScoreUpdate, onGameReset }: MazeLevelProps) {
         </div>
       </div>
 
-      {/* Game Actions */}
+      {/* Game Actions - Hidden on mobile */}
       <div className="flex justify-center gap-4">
         <button
           onClick={handleReset}
@@ -268,8 +284,8 @@ function MazeLevel({ score, onScoreUpdate, onGameReset }: MazeLevelProps) {
         </button>
       </div>
 
-      {/* Tips Section */}
-      <div className="mt-8 bg-gradient-to-r from-green-900 to-emerald-900 bg-opacity-50 rounded-lg p-4 backdrop-blur-sm border-2 border-green-500">
+      {/* Tips Section - Hidden on mobile */}
+      <div className="hidden md:block mt-8 bg-gradient-to-r from-green-900 to-emerald-900 bg-opacity-50 rounded-lg p-4 backdrop-blur-sm border-2 border-green-500">
         <p className="text-sm text-green-200">
           💡 <span className="font-semibold">How to Win:</span> Collect{" "}
           <span className="text-lime-300 font-bold">20 items</span> to

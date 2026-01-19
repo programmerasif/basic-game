@@ -2,6 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import WhackAMoleLevel from "./WhackAMoleLevel";
 import MazeLevel from "./MazeLevel";
 import SnakeLevel from "./SnakeLevel";
+import LevelCompleteModal from "./LevelCompleteModal";
+
+// Import music
+import commonMusic from "../assets/music/common.mp3";
+import victoryMusic from "../assets/music/victory.mp3";
+import pointSound from "../assets/music/point.mp3";
 
 
 interface SharedGameState {
@@ -24,9 +30,80 @@ function GameManager() {
   const [gameCompleted, setGameCompleted] = useState(false);
   const [shouldAdvanceLevel, setShouldAdvanceLevel] = useState(false);
   const [nextLevel, setNextLevel] = useState(1);
+  const [showLevelCompleteModal, setShowLevelCompleteModal] = useState(false);
+  const [completedLevelScore, setCompletedLevelScore] = useState(0);
+
+  // Level names
+  const levelNames: Record<number, string> = {
+    1: "Whack-a-Mole",
+    2: "Maze Adventure",
+    3: "Snake Game",
+    4: "Maze Adventure II",
+    5: "Whack-a-Mole II",
+  };
 
   // Use refs to track previous values
   const prevScoreRef = useRef(0);
+
+  // Audio refs for background music and victory music
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const victoryAudioRef = useRef<HTMLAudioElement | null>(null);
+  const pointAudioRef = useRef<HTMLAudioElement | null>(null);
+
+  // Initialize audio on mount
+  useEffect(() => {
+    audioRef.current = new Audio(commonMusic);
+    audioRef.current.loop = true;
+    audioRef.current.volume = 0.5;
+
+    victoryAudioRef.current = new Audio(victoryMusic);
+    victoryAudioRef.current.loop = false;
+    victoryAudioRef.current.volume = 0.6;
+
+    pointAudioRef.current = new Audio(pointSound);
+    pointAudioRef.current.loop = false;
+    pointAudioRef.current.volume = 0.7;
+
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+      if (victoryAudioRef.current) {
+        victoryAudioRef.current.pause();
+        victoryAudioRef.current = null;
+      }
+      if (pointAudioRef.current) {
+        pointAudioRef.current.pause();
+        pointAudioRef.current = null;
+      }
+    };
+  }, []);
+
+  // Control music based on game state
+  useEffect(() => {
+    if (!audioRef.current || !victoryAudioRef.current) return;
+
+    if (showLevelCompleteModal || gameCompleted) {
+      // Level complete or game completed - play victory music, pause game music
+      audioRef.current.pause();
+      victoryAudioRef.current.currentTime = 0;
+      victoryAudioRef.current.play().catch(() => {
+        console.log("Victory audio play failed");
+      });
+    } else if (gameStarted) {
+      // Game is active - play game music, stop victory music
+      victoryAudioRef.current.pause();
+      victoryAudioRef.current.currentTime = 0;
+      audioRef.current.play().catch(() => {
+        console.log("Audio autoplay blocked - will play on user interaction");
+      });
+    } else {
+      // Game not started - pause all music
+      audioRef.current.pause();
+      victoryAudioRef.current.pause();
+    }
+  }, [gameStarted, gameCompleted, showLevelCompleteModal]);
 
   // Monitor score and determine if level should advance
   useEffect(() => {
@@ -39,35 +116,69 @@ function GameManager() {
       // eslint-disable-next-line react-hooks/exhaustive-deps
       setNextLevel(2);
       setShouldAdvanceLevel(true);
+      setCompletedLevelScore(10);
+      setShowLevelCompleteModal(true);
     }
     // Level 2 → Level 3 at 20 points
     else if (currentScore >= 20 && currentLevel === 2 && prevScore < 20) {
       // eslint-disable-next-line react-hooks/exhaustive-deps
       setNextLevel(3);
       setShouldAdvanceLevel(true);
+      setCompletedLevelScore(10);
+      setShowLevelCompleteModal(true);
     }
-    // Check for game completion (30 points)
-    else if (currentScore >= 30 && currentLevel === 3) {
-      setGameCompleted(true);
+    // Level 3 → Level 4 at 30 points
+    else if (currentScore >= 30 && currentLevel === 3 && prevScore < 30) {
+      setNextLevel(4);
+      setShouldAdvanceLevel(true);
+      setCompletedLevelScore(10);
+      setShowLevelCompleteModal(true);
+    }
+    // Level 4 → Level 5 at 40 points
+    else if (currentScore >= 40 && currentLevel === 4 && prevScore < 40) {
+      setNextLevel(5);
+      setShouldAdvanceLevel(true);
+      setCompletedLevelScore(10);
+      setShowLevelCompleteModal(true);
+    }
+    // Check for game completion (50 points)
+    else if (currentScore >= 50 && currentLevel === 5) {
+      setCompletedLevelScore(10);
+      setShowLevelCompleteModal(true);
     }
 
     prevScoreRef.current = currentScore;
   }, [sharedState.score, sharedState.currentLevel]);
 
-  // Handle level advancement when flag is set
-  useEffect(() => {
-    if (shouldAdvanceLevel && nextLevel !== sharedState.currentLevel) {
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+  // Handle level advancement when user clicks continue
+  const handleContinueToNextLevel = () => {
+    if (sharedState.currentLevel === 5) {
+      setGameCompleted(true);
+    } else if (shouldAdvanceLevel && nextLevel !== sharedState.currentLevel) {
       setSharedState((prev) => ({
         ...prev,
         currentLevel: nextLevel,
       }));
       setShouldAdvanceLevel(false);
     }
-  }, [shouldAdvanceLevel, nextLevel, sharedState.currentLevel]);
+    setShowLevelCompleteModal(false);
+  };
+
+  // Handle return to home
+  const handleReturnHome = () => {
+    setShowLevelCompleteModal(false);
+    resetGame();
+  };
 
   // Handle score updates from level components
   const handleScoreUpdate = (newScore: number) => {
+    // Play point sound effect
+    if (pointAudioRef.current && newScore > sharedState.score) {
+      pointAudioRef.current.currentTime = 0;
+      pointAudioRef.current.play().catch(() => {
+        console.log("Point sound play failed");
+      });
+    }
     setSharedState((prev) => ({
       ...prev,
       score: newScore,
@@ -81,16 +192,45 @@ function GameManager() {
       currentLevel: 1,
     });
     setGameStarted(false);
+    // Reset all audio to beginning
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+    if (victoryAudioRef.current) {
+      victoryAudioRef.current.pause();
+      victoryAudioRef.current.currentTime = 0;
+    }
   };
 
   // Start the game
   const startGame = () => {
     setGameStarted(true);
+    // Try to play music on user interaction (button click)
+    if (audioRef.current) {
+      audioRef.current.play().catch(() => {
+        console.log("Audio play failed");
+      });
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-green-950 to-slate-900 flex items-center justify-center p-4">
-      <div className="w-full max-w-4xl">
+    <div className={`min-h-screen bg-gradient-to-br from-slate-950 via-green-950 to-slate-900 flex items-center justify-center ${gameStarted && (sharedState.currentLevel === 2 || sharedState.currentLevel === 4) ? 'p-0 md:p-4 fixed md:relative inset-0 overflow-hidden md:overflow-visible' : 'p-4'}`}>
+      {/* Level Complete Modal */}
+      <LevelCompleteModal
+        isOpen={showLevelCompleteModal}
+        currentLevel={sharedState.currentLevel}
+        nextLevel={nextLevel}
+        totalLevels={5}
+        levelScore={completedLevelScore}
+        totalScore={sharedState.score}
+        levelName={levelNames[sharedState.currentLevel] || "Unknown Level"}
+        nextLevelName={levelNames[nextLevel] || "Final Level"}
+        onContinue={handleContinueToNextLevel}
+        onReturnHome={handleReturnHome}
+      />
+
+      <div className={`w-full ${gameStarted && sharedState.currentLevel === 2 ? 'max-w-full md:max-w-4xl h-screen md:h-auto overflow-hidden' : 'max-w-4xl'}`}>
         {/* Game Completion Screen */}
         {gameCompleted ? (
           <div className="text-center px-4">
@@ -100,7 +240,7 @@ function GameManager() {
                 CONGRATULATIONS!
               </h2>
               <p className="text-xl sm:text-2xl md:text-3xl text-white mb-3 sm:mb-4 drop-shadow-lg px-2">
-                You've completed all three levels!
+                You've completed all five levels!
               </p>
               <p className="text-lg sm:text-xl md:text-2xl text-green-50 mb-6 sm:mb-8">
                 Final Score: <span className="font-bold text-2xl sm:text-3xl md:text-4xl">{sharedState.score}</span>
@@ -109,6 +249,8 @@ function GameManager() {
                 <p className="text-sm sm:text-base md:text-lg">✅ Level 1: Whack-a-Mole - Mastered!</p>
                 <p className="text-sm sm:text-base md:text-lg">✅ Level 2: Maze Adventure - Conquered!</p>
                 <p className="text-sm sm:text-base md:text-lg">✅ Level 3: Snake Game - Completed!</p>
+                <p className="text-sm sm:text-base md:text-lg">✅ Level 4: Maze Adventure II - Conquered!</p>
+                <p className="text-sm sm:text-base md:text-lg">✅ Level 5: Whack-a-Mole II - Mastered!</p>
               </div>
               <button
                 onClick={() => window.location.reload()}
@@ -120,8 +262,8 @@ function GameManager() {
           </div>
         ) : (
           <>
-            {/* Global Header */}
-            <div className="text-center mb-8">
+            {/* Global Header - Hidden on mobile for Maze levels (2 and 4) */}
+            <div className={`text-center mb-8 ${(sharedState.currentLevel === 2 || sharedState.currentLevel === 4) ? 'hidden md:block' : ''}`}>
               <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-lg">
                 🎮 Multi-Level Game Challenge 🎮
               </h1>
@@ -171,8 +313,7 @@ function GameManager() {
                         🏰 Level 2: Maze Adventure
                       </h3>
                       <p className="text-sm">
-                        Navigate the maze with arrow keys or WASD and collect items
-                        to increase your score to 20!
+                        Navigate the maze and collect items to reach 20 points!
                       </p>
                     </div>
                     <div>
@@ -180,8 +321,23 @@ function GameManager() {
                         🐍 Level 3: Snake Game
                       </h3>
                       <p className="text-sm">
-                        Control the snake, eat food, and avoid collisions! Reach 30
-                        points to complete all levels!
+                        Control the snake, eat food! Reach 30 points to advance.
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white mb-2">
+                        🏰 Level 4: Maze Adventure II
+                      </h3>
+                      <p className="text-sm">
+                        Return to the maze! Reach 40 points to advance.
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white mb-2">
+                        📍 Level 5: Whack-a-Mole II
+                      </h3>
+                      <p className="text-sm">
+                        Final challenge! Reach 50 points to complete the game!
                       </p>
                     </div>
                   </div>
@@ -196,31 +352,67 @@ function GameManager() {
             ) : sharedState.currentLevel === 1 ? (
               // Level 1: Whack-a-Mole
               <WhackAMoleLevel
+                key="whack-level-1"
                 score={sharedState.score}
                 onScoreUpdate={handleScoreUpdate}
                 onLevelComplete={() => {
                   // Level complete when reaching 10 points
                   // Transition handled by useEffect
                 }}
+                levelNumber={1}
+                targetScore={10}
+                levelName="Whack-a-Mole"
+                nextLevelName="Maze Adventure"
               />
             ) : sharedState.currentLevel === 2 ? (
               // Level 2: Maze
               <MazeLevel
+                key="maze-level-2"
+                score={sharedState.score}
+                onScoreUpdate={handleScoreUpdate}
+                onGameReset={resetGame}
+                levelNumber={2}
+                targetScore={20}
+                levelName="Maze Adventure"
+              />
+            ) : sharedState.currentLevel === 3 ? (
+              // Level 3: Snake Game
+              <SnakeLevel
+                key="snake-level-3"
                 score={sharedState.score}
                 onScoreUpdate={handleScoreUpdate}
                 onGameReset={resetGame}
               />
-            ) : (
-              // Level 3: Snake Game
-              <SnakeLevel
+            ) : sharedState.currentLevel === 4 ? (
+              // Level 4: Maze Adventure II (repeat of Maze)
+              <MazeLevel
+                key="maze-level-4"
                 score={sharedState.score}
                 onScoreUpdate={handleScoreUpdate}
                 onGameReset={resetGame}
+                levelNumber={4}
+                targetScore={40}
+                levelName="Maze Adventure II"
+              />
+            ) : (
+              // Level 5: Whack-a-Mole II (repeat of Whack-a-Mole)
+              <WhackAMoleLevel
+                key="whack-level-5"
+                score={sharedState.score}
+                onScoreUpdate={handleScoreUpdate}
+                onLevelComplete={() => {
+                  // Level complete when reaching 50 points
+                  // Transition handled by useEffect
+                }}
+                levelNumber={5}
+                targetScore={50}
+                levelName="Whack-a-Mole II"
+                nextLevelName="Game Complete!"
               />
             )}
 
-            {/* Footer */}
-            <p className="text-center text-green-400 text-xs mt-8 font-medium">
+            {/* Footer - Hidden on mobile for Maze levels (2 and 4) */}
+            <p className={`text-center text-green-400 text-xs mt-8 font-medium ${(sharedState.currentLevel === 2 || sharedState.currentLevel === 4) ? 'hidden md:block' : ''}`}>
               © 2026 hit-the-hade | Designed & Developed by <a href="https://mntechdigital.com/" className="underline">MNTECH DIGITAL</a>
             </p>
           </>

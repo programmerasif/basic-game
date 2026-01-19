@@ -1,6 +1,5 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import SnakeBoard from "./SnakeBoard.tsx";
-import MobileControls from "./MobileControls";
 
 interface SnakeLevelProps {
     score: number;
@@ -52,34 +51,10 @@ function SnakeLevel({ score, onScoreUpdate, onGameReset }: SnakeLevelProps) {
         onGameReset();
     };
 
-    // Mobile control handlers for snake movement
-    const handleMoveUp = useCallback(() => {
-        const upEvent = new KeyboardEvent("keydown", {
-            key: "ArrowUp",
-        });
-        window.dispatchEvent(upEvent);
-    }, []);
 
-    const handleMoveDown = useCallback(() => {
-        const downEvent = new KeyboardEvent("keydown", {
-            key: "ArrowDown",
-        });
-        window.dispatchEvent(downEvent);
-    }, []);
 
-    const handleMoveLeft = useCallback(() => {
-        const leftEvent = new KeyboardEvent("keydown", {
-            key: "ArrowLeft",
-        });
-        window.dispatchEvent(leftEvent);
-    }, []);
 
-    const handleMoveRight = useCallback(() => {
-        const rightEvent = new KeyboardEvent("keydown", {
-            key: "ArrowRight",
-        });
-        window.dispatchEvent(rightEvent);
-    }, []);
+
 
     return (
         <div className="w-full">
@@ -151,18 +126,6 @@ function SnakeLevel({ score, onScoreUpdate, onGameReset }: SnakeLevelProps) {
                     onFoodEaten={handleFoodEaten}
                     onGameOver={handleGameOver}
                 />
-            )}
-            {/* Instructions */}
-            {!gameOver && (
-               <div>
-                <MobileControls
-                        onUp={handleMoveUp}
-                        onDown={handleMoveDown}
-                        onLeft={handleMoveLeft}
-                        onRight={handleMoveRight}
-                        label="Use arrow buttons to control the snake"
-                    />
-               </div>
             )}
             {/* Progress indicator for level completion */}
             {!gameOver && score >= 30 && (

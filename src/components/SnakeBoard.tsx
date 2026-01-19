@@ -81,6 +81,68 @@ function SnakeBoard({ onFoodEaten, onGameOver }: SnakeBoardProps) {
         return () => window.removeEventListener("keydown", handleKeyDown);
     }, [handleKeyDown]);
 
+    // Touch/swipe controls for mobile
+    useEffect(() => {
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchEndX = 0;
+        let touchEndY = 0;
+
+        const handleTouchStart = (e: TouchEvent) => {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+        };
+
+        const handleTouchMove = (e: TouchEvent) => {
+            touchEndX = e.touches[0].clientX;
+            touchEndY = e.touches[0].clientY;
+        };
+
+        const handleTouchEnd = () => {
+            const deltaX = touchEndX - touchStartX;
+            const deltaY = touchEndY - touchStartY;
+            const minSwipeDistance = 15; // Reduced for faster response
+
+            // Only process if there was actual movement
+            if (Math.abs(deltaX) < minSwipeDistance && Math.abs(deltaY) < minSwipeDistance) {
+                return;
+            }
+
+            // Determine swipe direction based on larger delta
+            if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                // Horizontal swipe
+                if (deltaX > 0) {
+                    setNextDirection({ x: 1, y: 0 }); // right
+                } else {
+                    setNextDirection({ x: -1, y: 0 }); // left
+                }
+            } else {
+                // Vertical swipe
+                if (deltaY > 0) {
+                    setNextDirection({ x: 0, y: 1 }); // down
+                } else {
+                    setNextDirection({ x: 0, y: -1 }); // up
+                }
+            }
+        };
+
+        window.addEventListener('touchstart', handleTouchStart, { passive: true });
+        window.addEventListener('touchmove', handleTouchMove, { passive: true });
+        window.addEventListener('touchend', handleTouchEnd);
+
+        return () => {
+            window.removeEventListener('touchstart', handleTouchStart);
+            window.removeEventListener('touchmove', handleTouchMove);
+            window.removeEventListener('touchend', handleTouchEnd);
+        };
+    }, []);
+
+    // Direction button handlers
+    const handleDirectionUp = () => setNextDirection({ x: 0, y: -1 });
+    const handleDirectionDown = () => setNextDirection({ x: 0, y: 1 });
+    const handleDirectionLeft = () => setNextDirection({ x: -1, y: 0 });
+    const handleDirectionRight = () => setNextDirection({ x: 1, y: 0 });
+
     // Game loop
     useEffect(() => {
         const gameLoop = setInterval(() => {
@@ -141,46 +203,120 @@ function SnakeBoard({ onFoodEaten, onGameOver }: SnakeBoardProps) {
     }, [direction, nextDirection, food, onFoodEaten, onGameOver]);
 
     return (
-        <div className="flex justify-center mb-8">
+        <div className="flex flex-col items-center mb-8 relative">
+            {/* Game Instructions - visible on desktop */}
+            <div className="hidden md:flex gap-6 mb-4 text-sm">
+                <div className="flex items-center gap-2 bg-emerald-900 bg-opacity-60 px-3 py-2 rounded-lg border border-emerald-500">
+                    <span className="text-lg">🐍</span>
+                    <span className="text-emerald-300">= You (Snake Head)</span>
+                </div>
+                <div className="flex items-center gap-2 bg-orange-900 bg-opacity-60 px-3 py-2 rounded-lg border border-orange-500">
+                    <span className="text-lg">🍎</span>
+                    <span className="text-orange-300">= Food (Eat to grow!)</span>
+                </div>
+                <div className="flex items-center gap-2 bg-red-900 bg-opacity-60 px-3 py-2 rounded-lg border border-red-500">
+                    <span className="text-lg">🚧</span>
+                    <span className="text-red-300">= Wall (Avoid!)</span>
+                </div>
+            </div>
+
+            {/* Mobile Instructions */}
+            <div className="flex md:hidden gap-2 mb-3 text-xs">
+                <div className="flex items-center gap-1 bg-emerald-900 bg-opacity-80 px-2 py-1 rounded border border-emerald-500">
+                    <span>🐍</span>
+                    <span className="text-emerald-300">You</span>
+                </div>
+                <div className="flex items-center gap-1 bg-orange-900 bg-opacity-80 px-2 py-1 rounded border border-orange-500">
+                    <span>🍎</span>
+                    <span className="text-orange-300">Eat!</span>
+                </div>
+                <div className="flex items-center gap-1 bg-red-900 bg-opacity-80 px-2 py-1 rounded border border-red-500">
+                    <span>🚧</span>
+                    <span className="text-red-300">Avoid!</span>
+                </div>
+            </div>
+
+            {/* Game Board */}
             <div
-                className="bg-slate-900 border-4 border-emerald-500 rounded-lg shadow-2xl"
+                className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border-4 border-emerald-500 rounded-xl shadow-2xl relative"
                 style={{
                     display: "grid",
                     gridTemplateColumns: `repeat(${BOARD_WIDTH}, 1fr)`,
-                    gap: "2px",
-                    padding: "8px",
-                    width: `${BOARD_WIDTH * 25 + 16}px`,
-                    height: `${BOARD_HEIGHT * 25 + 16}px`,
+                    gap: "1px",
+                    padding: "6px",
+                    width: `${BOARD_WIDTH * 22 + 12}px`,
+                    height: `${BOARD_HEIGHT * 22 + 12}px`,
                 }}
             >
                 {/* Render board cells */}
                 {Array.from({ length: BOARD_HEIGHT }).map((_, y) =>
                     Array.from({ length: BOARD_WIDTH }).map((_, x) => {
                         const isSnakeHead = snake[0].x === x && snake[0].y === y;
-                        const isSnakeBody = snake.some((pos) => pos.x === x && pos.y === y);
+                        const isSnakeBody = snake.some((pos, idx) => idx > 0 && pos.x === x && pos.y === y);
                         const isFood = food.x === x && food.y === y;
                         const isBorder = x === 0 || x === BOARD_WIDTH - 1 || y === 0 || y === BOARD_HEIGHT - 1;
 
                         return (
                             <div
                                 key={`${x}-${y}`}
-                                className={`w-6 h-6 rounded-sm transition-all ${isBorder
-                                    ? "bg-red-900 border-2 border-red-600"
+                                className={`w-5 h-5 rounded-sm flex items-center justify-center transition-all duration-75 ${isBorder
+                                    ? "bg-gradient-to-br from-red-800 to-red-900 border border-red-600"
                                     : isSnakeHead
-                                        ? "bg-lime-400 shadow-lg shadow-lime-400"
+                                        ? "bg-gradient-to-br from-lime-400 to-lime-500 shadow-lg shadow-lime-400/50 rounded-md"
                                         : isSnakeBody
-                                            ? "bg-emerald-500"
+                                            ? "bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-sm"
                                             : isFood
-                                                ? "bg-orange-500 shadow-lg shadow-orange-400"
-                                                : "bg-slate-800"
+                                                ? "bg-gradient-to-br from-orange-400 to-red-500 shadow-lg shadow-orange-400/50 animate-pulse rounded-full"
+                                                : "bg-slate-700/50"
                                     }`}
                             >
-                                {isSnakeHead && !isBorder && <span className="text-xs">🐍</span>}
-                                {isFood && !isBorder && <span className="text-xs">🍎</span>}
+                                {isSnakeHead && !isBorder && <span className="text-sm drop-shadow-lg">🐍</span>}
+                                {isFood && !isBorder && <span className="text-sm drop-shadow-lg">🍎</span>}
+                                {isBorder && <span className="text-[8px] opacity-60">🚧</span>}
                             </div>
                         );
                     })
                 )}
+            </div>
+
+            {/* Direction hint for desktop */}
+            <div className="hidden md:block mt-4 text-center">
+                <p className="text-emerald-300 text-sm">Use <span className="bg-slate-700 px-2 py-1 rounded text-white font-mono">↑ ↓ ← →</span> or <span className="bg-slate-700 px-2 py-1 rounded text-white font-mono">W A S D</span> to move</p>
+            </div>
+
+            {/* Compact Mobile Direction Buttons */}
+            <div className="mt-4 md:hidden">
+                <p className="text-emerald-300 text-xs text-center mb-2">Swipe or tap buttons to move</p>
+                <div className="relative w-24 h-24 mx-auto">
+                    {/* Up Button */}
+                    <button
+                        onTouchStart={(e) => { e.stopPropagation(); handleDirectionUp(); }}
+                        className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-emerald-600 bg-opacity-90 border-2 border-emerald-400 flex items-center justify-center text-white text-sm font-bold active:bg-emerald-500 active:scale-95 shadow-lg"
+                    >
+                        ▲
+                    </button>
+                    {/* Down Button */}
+                    <button
+                        onTouchStart={(e) => { e.stopPropagation(); handleDirectionDown(); }}
+                        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-emerald-600 bg-opacity-90 border-2 border-emerald-400 flex items-center justify-center text-white text-sm font-bold active:bg-emerald-500 active:scale-95 shadow-lg"
+                    >
+                        ▼
+                    </button>
+                    {/* Left Button */}
+                    <button
+                        onTouchStart={(e) => { e.stopPropagation(); handleDirectionLeft(); }}
+                        className="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-emerald-600 bg-opacity-90 border-2 border-emerald-400 flex items-center justify-center text-white text-sm font-bold active:bg-emerald-500 active:scale-95 shadow-lg"
+                    >
+                        ◀
+                    </button>
+                    {/* Right Button */}
+                    <button
+                        onTouchStart={(e) => { e.stopPropagation(); handleDirectionRight(); }}
+                        className="absolute right-0 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-emerald-600 bg-opacity-90 border-2 border-emerald-400 flex items-center justify-center text-white text-sm font-bold active:bg-emerald-500 active:scale-95 shadow-lg"
+                    >
+                        ▶
+                    </button>
+                </div>
             </div>
         </div>
     );
