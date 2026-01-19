@@ -9,7 +9,7 @@ interface MazeLevelProps {
   onGameReset: () => void;
 }
 
-const MAZE_SIZE = 14; // Must match MazeGrid MAZE_SIZE
+const MAZE_SIZE = 30; // Must match MazeGrid MAZE_SIZE
 
 /**
  * MazeLevel Component
@@ -22,10 +22,10 @@ const MAZE_SIZE = 14; // Must match MazeGrid MAZE_SIZE
  * No time limit - explore at your own pace!
  */
 function MazeLevel({ score, onScoreUpdate, onGameReset }: MazeLevelProps) {
-  // Player starting position (first inner cell after boundary, top-left inner area)
+  // Player starting position - on a valid path in the maze (row 0, col 5 is path)
   const [playerPosition, setPlayerPosition] = useState<Position>({
-    row: 1,
-    col: 1,
+    row: 0,
+    col: 5,
   });
 
   // Track items collected in this level
@@ -82,7 +82,7 @@ function MazeLevel({ score, onScoreUpdate, onGameReset }: MazeLevelProps) {
 
   // Handle game reset
   const handleReset = () => {
-    setPlayerPosition({ row: 1, col: 1 }); // Reset to first inner position (not on boundary)
+    setPlayerPosition({ row: 0, col: 5 }); // Reset to valid starting position
     setLevelScore(0);
     setLevelComplete(false);
     onGameReset();
