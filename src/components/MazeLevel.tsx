@@ -126,21 +126,21 @@ function MazeLevel({ score, onScoreUpdate, onGameReset, levelNumber = 2, targetS
         <div className="h-16 w-1 bg-gradient-to-b from-green-500 to-transparent"></div>
         <div className="text-center">
           <p className="text-green-300 text-sm font-semibold mb-1">
-            TOTAL SCORE
+            মোট স্কোর
           </p>
 
         </div>
         <div className="h-16 w-1 bg-gradient-to-b from-green-500 to-transparent"></div>
         <div className="text-center">
           <p className="text-green-300 text-sm font-semibold mb-1">
-            ITEMS FOUND
+            গুপ্ত ধরা
           </p>
 
         </div>
       </div>
       <div className="hidden md:flex justify-around items-center mb-8 bg-green-950 bg-opacity-70 rounded-lg p-6 backdrop-blur-sm border-2 border-green-500">
         <div className="text-center">
-          <p className="text-green-300 text-sm font-semibold mb-1">LEVEL {levelNumber}</p>
+          <p className="text-green-300 text-sm font-semibold mb-1">লেভেল{levelNumber}</p>
           <p className="text-3xl font-bold text-emerald-400 drop-shadow-lg">
             {levelName}
           </p>
@@ -148,7 +148,7 @@ function MazeLevel({ score, onScoreUpdate, onGameReset, levelNumber = 2, targetS
         <div className="h-16 w-1 bg-gradient-to-b from-green-500 to-transparent"></div>
         <div className="text-center">
           <p className="text-green-300 text-sm font-semibold mb-1">
-            TOTAL SCORE
+            মোট স্কোর
           </p>
           <p className="text-4xl font-bold text-lime-400 drop-shadow-lg">
             {score}
@@ -157,7 +157,7 @@ function MazeLevel({ score, onScoreUpdate, onGameReset, levelNumber = 2, targetS
         <div className="h-16 w-1 bg-gradient-to-b from-green-500 to-transparent"></div>
         <div className="text-center">
           <p className="text-green-300 text-sm font-semibold mb-1">
-            ITEMS FOUND
+            গুপ্ত ধরা
           </p>
           <p className="text-4xl font-bold text-teal-400 drop-shadow-lg">
             {levelScore}
@@ -172,29 +172,29 @@ function MazeLevel({ score, onScoreUpdate, onGameReset, levelNumber = 2, targetS
               <div className="text-8xl animate-bounce">🏰</div>
             </div>
             <p className="text-6xl font-extrabold text-white mb-6 text-center drop-shadow-2xl animate-pulse">
-              🎉 CONGRATULATIONS! 🎉
+              🎉 অভিনন্দন! 🎉
             </p>
             <div className="bg-green-900 bg-opacity-40 rounded-xl p-6 mb-6">
               <p className="text-3xl font-bold text-white text-center mb-3">
                 {score >= targetScore
-                  ? `🌟 You collected ${targetScore} items! 🌟`
-                  : "👑 You reached the castle! 👑"}
+                  ? `🌟 আপনি ${targetScore}টি গুপ্ত ধরেছেন! 🌟`
+                  : "👑 আপনি গন্তব্যে পৌঁছেছেন! 👑"}
               </p>
               <div className="flex justify-center gap-8 mt-4">
                 <div className="text-center">
-                  <p className="text-green-200 text-sm font-semibold mb-1">TOTAL SCORE</p>
+                  <p className="text-green-200 text-sm font-semibold mb-1">মোট স্কোর</p>
                   <p className="text-4xl font-bold text-yellow-300 drop-shadow-lg">{score}</p>
                 </div>
                 <div className="h-16 w-1 bg-gradient-to-b from-white to-transparent opacity-30"></div>
                 <div className="text-center">
-                  <p className="text-green-200 text-sm font-semibold mb-1">ITEMS COLLECTED</p>
+                  <p className="text-green-200 text-sm font-semibold mb-1">গুপ্ত ধরা</p>
                   <p className="text-4xl font-bold text-yellow-300 drop-shadow-lg">{levelScore}</p>
                 </div>
               </div>
             </div>
             <div className="flex items-center justify-center gap-3 text-2xl text-white font-bold animate-pulse">
               <span>✨</span>
-              <span>Advancing to Level {levelNumber + 1}{levelNumber === 2 ? ": Snake Game" : ": Whack-a-Mole II"}</span>
+              <span>লেভেল{levelNumber + 1} এ যাচ্ছে{levelNumber === 2 ? ": রাজাকার গুপ্ত" : ": চাঁদাবাজ গুপ্ত"}</span>
               <span>✨</span>
             </div>
           </div>
@@ -216,10 +216,10 @@ function MazeLevel({ score, onScoreUpdate, onGameReset, levelNumber = 2, targetS
         <div className="hidden md:block mb-8 bg-green-900 bg-opacity-70 rounded-2xl p-12 backdrop-blur-sm text-center border-2 border-green-500">
           <p className="text-6xl mb-4">🏰</p>
           <p className="text-2xl font-bold text-white mb-4">
-            You've reached the castle!
+            আপনি গন্তব্যে পৌঁছেছেন!
           </p>
           <p className="text-lg text-green-200">
-            Successfully navigated the maze and reached your destination!
+            সফলভাবে গোলকধাঁধা পার করে গন্তব্যে পৌঁছেছেন!
           </p>
         </div>
       )}
@@ -227,40 +227,40 @@ function MazeLevel({ score, onScoreUpdate, onGameReset, levelNumber = 2, targetS
       {/* Instructions and Controls - Hidden on mobile */}
       <div className="hidden md:block bg-green-950 bg-opacity-60 rounded-xl p-6 backdrop-blur-sm mb-8 border-2 border-green-500">
         <h3 className="text-xl font-bold text-white mb-4">
-          📍 Level 2: Maze Adventure
+          📍 লেভেল{levelNumber}: {levelName}
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-green-200">
           <div>
-            <p className="font-semibold text-white mb-2">🎮 Controls</p>
+            <p className="font-semibold text-white mb-2">🎮 নিয়ন্ত্রণ</p>
             <ul className="text-sm space-y-1">
               <li>
-                • <span className="text-lime-400">↑ ↓ ← →</span> Arrow Keys / WASD
+                • <span className="text-lime-400">↑ ↓ ← →</span> এরো কি / WASD
               </li>
               <li>
-                • <span className="text-lime-400">📱 Swipe</span> on mobile
+                • <span className="text-lime-400">📱 সোয়াইপ</span> মোবাইলে
               </li>
-              <li>• Character auto-runs, just turn!</li>
+              <li>• ক্যারেক্টার অটো-রান করে, শুধু ঘুরান!</li>
             </ul>
           </div>
           <div>
-            <p className="font-semibold text-white mb-2">🎯 Objectives</p>
+            <p className="font-semibold text-white mb-2">🎯 লক্ষ্য</p>
             <ul className="text-sm space-y-1">
-              <li>• Collect scattered items 💰 🍎 🏠 ⭐ 💎</li>
+              <li>• ছড়ানো গুপ্ত ধরুন 👤</li>
               <li>
                 •{" "}
                 <span className="text-lime-300 font-bold">
-                  Collect 20 items to WIN!
+                  {targetScore}টি গুপ্ত ধরলে জিত!
                 </span>
               </li>
-              <li>• Or reach the castle 🏰 to complete</li>
+              <li>• অথবা গন্তব্যে 🏰 পৌঁছান</li>
             </ul>
           </div>
           <div>
-            <p className="font-semibold text-white mb-2">📊 Maze Features</p>
+            <p className="font-semibold text-white mb-2">📊 গোলকধাঁধা ফিচার</p>
             <ul className="text-sm space-y-1">
-              <li>• Start: Top-left 🧑</li>
-              <li>• Goal: Bottom-right 🏰</li>
-              <li>• More walls = harder challenge</li>
+              <li>• শুরু: উপর-বাম 🧑</li>
+              <li>• গন্তব্য: নিচে-ডান 🏰</li>
+              <li>• বেশি দেয়াল = কঠিন চ্যালেঞ্জ</li>
             </ul>
 
 
@@ -274,23 +274,22 @@ function MazeLevel({ score, onScoreUpdate, onGameReset, levelNumber = 2, targetS
           onClick={handleReset}
           className="px-8 py-3 bg-gradient-to-r from-red-500 to-orange-500 text-white font-bold rounded-lg shadow-lg hover:from-red-600 hover:to-orange-600 transition-all transform hover:scale-105 active:scale-95 border-2 border-red-600"
         >
-          🏠 Back to Start
+          🏠 শুরুতে ফিরে যান
         </button>
         <button
           onClick={handleReset}
           className="px-8 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold rounded-lg shadow-lg hover:from-emerald-600 hover:to-teal-600 transition-all transform hover:scale-105 active:scale-95 border-2 border-emerald-600"
         >
-          🔄 New Game
+          🔄 নতুন গেম
         </button>
       </div>
 
       {/* Tips Section - Hidden on mobile */}
       <div className="hidden md:block mt-8 bg-gradient-to-r from-green-900 to-emerald-900 bg-opacity-50 rounded-lg p-4 backdrop-blur-sm border-2 border-green-500">
         <p className="text-sm text-green-200">
-          💡 <span className="font-semibold">How to Win:</span> Collect{" "}
-          <span className="text-lime-300 font-bold">20 items</span> to
-          complete the level! You can also reach the castle 🏰 to finish the
-          level. No time limit - explore and collect at your own pace!
+          💡 <span className="font-semibold">কিভাবে জিতবেন:</span> লেভেলশেষ করতে{" "}
+          <span className="text-lime-300 font-bold">{targetScore}টি গুপ্ত</span> ধরুন!
+          আপনি গন্তব্যে 🏰 পৌঁছেও লেভেলশেষ করতে পারেন। কোনো সময় সীমা নেই - আপনার মতো খেলুন!
         </p>
       </div>
     </div>

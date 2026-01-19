@@ -100,12 +100,12 @@ function WhackAMoleLevel({
     return (
       <div className="text-center mb-8">
         <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl p-10 backdrop-blur-sm animate-pulse border-4 border-green-400">
-          <p className="text-5xl font-bold text-white mb-4">🎉 Level Up! 🎉</p>
+          <p className="text-5xl font-bold text-white mb-4">🎉 লেভেলশেষ! 🎉</p>
           <p className="text-2xl text-white mb-4">
-            Amazing job reaching {targetScore} points!
+            অসাধারণ! {targetScore} পয়েন্ট অর্জন করেছেন!
           </p>
           <p className="text-xl text-green-100">
-            Loading Level {levelNumber + 1}: {nextLevelName}...
+            লেভেল{levelNumber + 1} লোড হচ্ছে: {nextLevelName}...
           </p>
         </div>
       </div>
@@ -117,14 +117,14 @@ function WhackAMoleLevel({
       {/* Score and Timer Display */}
       <div className="flex justify-around items-center mb-8 bg-green-950 bg-opacity-70 rounded-lg p-6 backdrop-blur-sm border-2 border-green-500">
         <div className="text-center">
-          <p className="text-green-300 text-sm font-semibold mb-1">LEVEL {levelNumber}</p>
+          <p className="text-green-300 text-sm font-semibold mb-1">লেভেল{levelNumber}</p>
           <p className="text-3xl font-bold text-emerald-400 drop-shadow-lg">
             {levelName}
           </p>
         </div>
         <div className="h-16 w-1 bg-gradient-to-b from-green-500 to-transparent"></div>
         <div className="text-center">
-          <p className="text-green-300 text-sm font-semibold mb-1">SCORE</p>
+          <p className="text-green-300 text-sm font-semibold mb-1">স্কোর</p>
           <p className="text-4xl font-bold text-lime-400 drop-shadow-lg">
             {score}
             <span className="text-xl"> / {targetScore}</span>
@@ -132,12 +132,12 @@ function WhackAMoleLevel({
         </div>
         <div className="h-16 w-1 bg-gradient-to-b from-green-500 to-transparent"></div>
         <div className="text-center">
-          <p className="text-green-300 text-sm font-semibold mb-1">TIME</p>
+          <p className="text-green-300 text-sm font-semibold mb-1">সময়</p>
           <p
             className={`text-4xl font-bold drop-shadow-lg transition-colors ${gameState.timeLeft <= 10 ? "text-red-400" : "text-emerald-400"
               }`}
           >
-            {gameState.timeLeft}s
+            {gameState.timeLeft}সে
           </p>
         </div>
       </div>
@@ -167,15 +167,15 @@ function WhackAMoleLevel({
       <div className="text-center">
         {!gameState.gameActive ? (
           <div className="mb-6 p-6 bg-red-500 bg-opacity-90 rounded-xl backdrop-blur-sm border-2 border-red-400">
-            <p className="text-white text-3xl font-bold mb-2">⏰ Time's Up!</p>
-            <p className="text-xl text-white mb-2">Final Score: {score}</p>
+            <p className="text-white text-3xl font-bold mb-2">⏰ সময় শেষ!</p>
+            <p className="text-xl text-white mb-2">চূড়ান্ত স্কোর: {score}</p>
             {score < targetScore ? (
               <p className="text-sm text-white">
-                You needed {targetScore} points to advance. Try again!
+                আপনার {targetScore} পয়েন্ট দরকার ছিল। আবার চেষ্টা করুন!
               </p>
             ) : (
               <p className="text-sm text-white">
-                You've advanced to Level {levelNumber + 1}! 🎉
+                আপনি লেভেল{levelNumber + 1} এ উন্নীত হয়েছেন! 🎉
               </p>
             )}
           </div>
@@ -183,8 +183,8 @@ function WhackAMoleLevel({
           <p className="text-center text-green-300 text-sm mt-6 font-semibold">
             ✨{" "}
             {score >= targetScore
-              ? `Level ${levelNumber} Complete! Advancing...`
-              : "Keep clicking! You're doing great! ✨"}
+              ? `লেভেল${levelNumber} সম্পন্ন! এগিয়ে যাচ্ছে...`
+              : "গুপ্ত ধরুন! চালিয়ে যান! ✨"}
           </p>
         )}
       </div>

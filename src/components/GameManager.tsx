@@ -33,13 +33,13 @@ function GameManager() {
   const [showLevelCompleteModal, setShowLevelCompleteModal] = useState(false);
   const [completedLevelScore, setCompletedLevelScore] = useState(0);
 
-  // Level names
+  // Level names in Bengali
   const levelNames: Record<number, string> = {
-    1: "Whack-a-Mole",
-    2: "Maze Adventure",
-    3: "Snake Game",
-    4: "Maze Adventure II",
-    5: "Whack-a-Mole II",
+    1: "ধর্ষক গুপ্ত",
+    2: "খুনি গুপ্ত",
+    3: "রাজাকার গুপ্ত",
+    4: "রগকাটা-সন্ত্রাসি গুপ্ত",
+    5: "চাঁদাবাজ গুপ্ত",
   };
 
   // Use refs to track previous values
@@ -237,26 +237,26 @@ function GameManager() {
             <div className="bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 rounded-2xl md:rounded-3xl p-6 sm:p-8 md:p-12 backdrop-blur-sm animate-pulse shadow-2xl border-2 md:border-4 border-green-400">
               <p className="text-4xl sm:text-5xl md:text-6xl mb-4 sm:mb-6">🏆 🎊 🏆</p>
               <h2 className="text-xl sm:text-4xl md:text-5xl font-bold text-white mb-4 sm:mb-6 drop-shadow-lg px-2">
-                CONGRATULATIONS!
+                অভিনন্দন!
               </h2>
               <p className="text-xl sm:text-2xl md:text-3xl text-white mb-3 sm:mb-4 drop-shadow-lg px-2">
-                You've completed all five levels!
+                আপনি সব গুপ্ত ধরেছেন!
               </p>
               <p className="text-lg sm:text-xl md:text-2xl text-green-50 mb-6 sm:mb-8">
-                Final Score: <span className="font-bold text-2xl sm:text-3xl md:text-4xl">{sharedState.score}</span>
+                মোট স্কোর: <span className="font-bold text-2xl sm:text-3xl md:text-4xl">{sharedState.score}</span>
               </p>
               <div className="space-y-2 sm:space-y-3 text-left max-w-2xl mx-auto text-white mb-6 sm:mb-10 bg-green-900 bg-opacity-60 rounded-xl p-4 sm:p-6 border-2 border-green-400">
-                <p className="text-sm sm:text-base md:text-lg">✅ Level 1: Whack-a-Mole - Mastered!</p>
-                <p className="text-sm sm:text-base md:text-lg">✅ Level 2: Maze Adventure - Conquered!</p>
-                <p className="text-sm sm:text-base md:text-lg">✅ Level 3: Snake Game - Completed!</p>
-                <p className="text-sm sm:text-base md:text-lg">✅ Level 4: Maze Adventure II - Conquered!</p>
-                <p className="text-sm sm:text-base md:text-lg">✅ Level 5: Whack-a-Mole II - Mastered!</p>
+                <p className="text-sm sm:text-base md:text-lg">✅ লেভেল১: ধর্ষক গুপ্ত - ধরা হয়েছে!</p>
+                <p className="text-sm sm:text-base md:text-lg">✅ লেভেল২: খুনি গুপ্ত - ধরা হয়েছে!</p>
+                <p className="text-sm sm:text-base md:text-lg">✅ লেভেল৩: রাজাকার গুপ্ত - ধরা হয়েছে!</p>
+                <p className="text-sm sm:text-base md:text-lg">✅ লেভেল৪: রগকাটা-সন্ত্রাসি গুপ্ত - ধরা হয়েছে!</p>
+                <p className="text-sm sm:text-base md:text-lg">✅ লেভেল৫: চাঁদাবাজ গুপ্ত - ধরা হয়েছে!</p>
               </div>
               <button
                 onClick={() => window.location.reload()}
                 className="px-8 sm:px-10 md:px-12 py-3 sm:py-4 bg-green-400 text-slate-900 font-bold text-lg sm:text-xl rounded-lg shadow-lg hover:bg-emerald-300 transition-all transform hover:scale-105 active:scale-95 border-2 border-green-600 w-full sm:w-auto"
               >
-                Play Again
+                আবার খেলুন
               </button>
             </div>
           </div>
@@ -265,13 +265,13 @@ function GameManager() {
             {/* Global Header - Hidden on mobile for Maze levels (2 and 4) */}
             <div className={`text-center mb-8 ${(sharedState.currentLevel === 2 || sharedState.currentLevel === 4) ? 'hidden md:block' : ''}`}>
               <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-lg">
-                🎮 Multi-Level Game Challenge 🎮
+                � গুপ্ত ধর 🎯
               </h1>
               {gameStarted && (
                 <div className="flex justify-center gap-8 mb-6 bg-green-950 bg-opacity-70 rounded-lg p-4 backdrop-blur-sm border-2 border-green-500">
                   <div className="text-center">
                     <p className="text-green-300 text-sm font-semibold mb-1">
-                      LEVEL
+                      স্তর
                     </p>
                     <p className="text-3xl font-bold text-emerald-400 drop-shadow-lg">
                       {sharedState.currentLevel}
@@ -280,7 +280,7 @@ function GameManager() {
                   <div className="h-12 w-1 bg-gradient-to-b from-green-500 to-transparent"></div>
                   <div className="text-center">
                     <p className="text-green-300 text-sm font-semibold mb-1">
-                      TOTAL SCORE
+                      মোট স্কোর
                     </p>
                     <p className="text-3xl font-bold text-lime-400 drop-shadow-lg">
                       {sharedState.score}
@@ -292,65 +292,121 @@ function GameManager() {
 
             {/* Level Content */}
             {!gameStarted ? (
-              // Start Screen
+              // Start Screen - Flowchart Style
               <div className="text-center">
-                <div className="bg-green-950 bg-opacity-60 rounded-2xl p-10 backdrop-blur-sm mb-8 border-2 border-green-500">
-                  <h2 className="text-3xl font-bold text-white mb-6">
-                    Welcome to the Adventure!
+                <div className="bg-green-950 bg-opacity-60 rounded-2xl p-6 md:p-10 backdrop-blur-sm mb-8 border-2 border-green-500">
+                  {/* Title */}
+                  <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
+                    গুপ্ত ধর
                   </h2>
-                  <div className="space-y-4 text-left max-w-md mx-auto text-green-200 mb-8">
-                    <div>
-                      <h3 className="text-xl font-bold text-white mb-2">
-                        📍 Level 1: Whack-a-Mole
-                      </h3>
-                      <p className="text-sm">
-                        Click the moles as fast as you can! Reach 10 points to
-                        advance.
-                      </p>
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold text-white mb-2">
-                        🏰 Level 2: Maze Adventure
-                      </h3>
-                      <p className="text-sm">
-                        Navigate the maze and collect items to reach 20 points!
-                      </p>
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold text-white mb-2">
-                        🐍 Level 3: Snake Game
-                      </h3>
-                      <p className="text-sm">
-                        Control the snake, eat food! Reach 30 points to advance.
-                      </p>
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold text-white mb-2">
-                        🏰 Level 4: Maze Adventure II
-                      </h3>
-                      <p className="text-sm">
-                        Return to the maze! Reach 40 points to advance.
-                      </p>
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold text-white mb-2">
-                        📍 Level 5: Whack-a-Mole II
-                      </h3>
-                      <p className="text-sm">
-                        Final challenge! Reach 50 points to complete the game!
-                      </p>
+                  <p className="text-green-300 text-lg mb-6">
+                    গুপ্ত ধর গেম-এ আপনাকে স্বাগতম
+                  </p>
+
+                  {/* Score Display */}
+                  <div className="flex justify-end mb-4">
+                    <div className="bg-green-900 bg-opacity-70 px-4 py-2 rounded-lg border border-green-500">
+                      <span className="text-green-300 text-sm">মোট স্কোর: </span>
+                      <span className="text-lime-400 font-bold">{sharedState.score}</span>
                     </div>
                   </div>
+
+                  {/* Flowchart Level Progression */}
+                  <div className="flex flex-wrap justify-center items-center gap-2 md:gap-4 mb-8 p-4 bg-green-900 bg-opacity-40 rounded-xl border border-green-600">
+                    {/* Level 1 */}
+                    <div className="flex flex-col items-center">
+                      <div className="bg-gradient-to-r from-green-600 to-emerald-600 px-3 md:px-6 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg">
+                        <p className="text-white font-bold text-xs md:text-sm">ধর্ষক গুপ্ত</p>
+                      </div>
+                    </div>
+                    <div className="text-green-400 text-xl md:text-2xl">▶</div>
+
+                    {/* Level 2 */}
+                    <div className="flex flex-col items-center">
+                      <div className="bg-gradient-to-r from-green-600 to-emerald-600 px-3 md:px-6 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg">
+                        <p className="text-white font-bold text-xs md:text-sm">খুনি গুপ্ত</p>
+                      </div>
+                    </div>
+                    <div className="text-green-400 text-xl md:text-2xl">▶</div>
+
+                    {/* Level 3 */}
+                    <div className="flex flex-col items-center">
+                      <div className="bg-gradient-to-r from-green-600 to-emerald-600 px-3 md:px-6 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg">
+                        <p className="text-white font-bold text-xs md:text-sm">রাজাকার গুপ্ত</p>
+                      </div>
+                    </div>
+                    <div className="text-green-400 text-xl md:text-2xl">▶</div>
+
+                    {/* Level 4 */}
+                    <div className="flex flex-col items-center">
+                      <div className="bg-gradient-to-r from-green-600 to-emerald-600 px-3 md:px-6 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg">
+                        <p className="text-white font-bold text-xs md:text-sm">রগকাটা-সন্ত্রাসি গুপ্ত</p>
+                      </div>
+                    </div>
+                    <div className="text-green-400 text-xl md:text-2xl">▶</div>
+
+                    {/* Level 5 */}
+                    <div className="flex flex-col items-center">
+                      <div className="bg-gradient-to-r from-green-600 to-emerald-600 px-3 md:px-6 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg">
+                        <p className="text-white font-bold text-xs md:text-sm">চাঁদাবাজ গুপ্ত</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Game Rules */}
+                  <div className="text-left max-w-lg mx-auto mb-8">
+                    <h3 className="text-xl font-bold text-emerald-400 mb-4 text-center">
+                      গুপ্ত ধর গেম নিয়ম
+                    </h3>
+                    <div className="space-y-3 text-green-200">
+                      <div className="flex items-start gap-2">
+                        <span className="text-pink-400">👤</span>
+                        <div>
+                          <span className="text-white font-bold">ধর্ষক গুপ্ত</span>
+                          <p className="text-sm">৫টি ধর্ষক গুপ্তকে ধরলে, পরের স্টেজ হবে খুনি গুপ্ত।</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <span className="text-pink-400">👤</span>
+                        <div>
+                          <span className="text-white font-bold">খুনি গুপ্ত</span>
+                          <p className="text-sm">৫টি খুনি গুপ্তকে ধরলে, পরের স্টেজ হবে রাজাকার গুপ্ত।</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <span className="text-pink-400">👤</span>
+                        <div>
+                          <span className="text-white font-bold">রাজাকার গুপ্ত</span>
+                          <p className="text-sm">৫টি রাজাকার গুপ্তকে ধরলে, পরের স্টেজ হবে রগকাটা-সন্ত্রাসি গুপ্ত।</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <span className="text-pink-400">👤</span>
+                        <div>
+                          <span className="text-white font-bold">রগকাটা-সন্ত্রাসি গুপ্ত</span>
+                          <p className="text-sm">৫টি রগকাটা-সন্ত্রাসি গুপ্তকে ধরলে, পরের স্টেজ হবে চাঁদাবাজ গুপ্ত।</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <span className="text-pink-400">👤</span>
+                        <div>
+                          <span className="text-white font-bold">চাঁদাবাজ গুপ্ত</span>
+                          <p className="text-sm">৫টি চাঁদাবাজ গুপ্তকে ধরলে, গেম শেষ!</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   <button
                     onClick={startGame}
-                    className="px-12 py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-bold text-xl rounded-lg shadow-lg hover:from-green-600 hover:to-emerald-600 transition-all transform hover:scale-105 active:scale-95"
+                    className="px-12 py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-bold text-xl rounded-lg shadow-lg hover:from-green-600 hover:to-emerald-600 transition-all transform hover:scale-105 active:scale-95 border-2 border-green-400"
                   >
-                    Start Adventure
+                    শুরু করুন
                   </button>
                 </div>
               </div>
             ) : sharedState.currentLevel === 1 ? (
-              // Level 1: Whack-a-Mole
+              // Level 1: ধর্ষক গুপ্ত
               <WhackAMoleLevel
                 key="whack-level-1"
                 score={sharedState.score}
@@ -361,11 +417,11 @@ function GameManager() {
                 }}
                 levelNumber={1}
                 targetScore={10}
-                levelName="Whack-a-Mole"
-                nextLevelName="Maze Adventure"
+                levelName="ধর্ষক গুপ্ত"
+                nextLevelName="খুনি গুপ্ত"
               />
             ) : sharedState.currentLevel === 2 ? (
-              // Level 2: Maze
+              // Level 2: খুনি গুপ্ত
               <MazeLevel
                 key="maze-level-2"
                 score={sharedState.score}
@@ -373,18 +429,21 @@ function GameManager() {
                 onGameReset={resetGame}
                 levelNumber={2}
                 targetScore={20}
-                levelName="Maze Adventure"
+                levelName="খুনি গুপ্ত"
               />
             ) : sharedState.currentLevel === 3 ? (
-              // Level 3: Snake Game
+              // Level 3: রাজাকার গুপ্ত
               <SnakeLevel
                 key="snake-level-3"
                 score={sharedState.score}
                 onScoreUpdate={handleScoreUpdate}
                 onGameReset={resetGame}
+                levelNumber={3}
+                targetScore={30}
+                levelName="রাজাকার গুপ্ত"
               />
             ) : sharedState.currentLevel === 4 ? (
-              // Level 4: Maze Adventure II (repeat of Maze)
+              // Level 4: রগকাটা-সন্ত্রাসি গুপ্ত
               <MazeLevel
                 key="maze-level-4"
                 score={sharedState.score}
@@ -392,10 +451,10 @@ function GameManager() {
                 onGameReset={resetGame}
                 levelNumber={4}
                 targetScore={40}
-                levelName="Maze Adventure II"
+                levelName="রগকাটা-সন্ত্রাসি গুপ্ত"
               />
             ) : (
-              // Level 5: Whack-a-Mole II (repeat of Whack-a-Mole)
+              // Level 5: চাঁদাবাজ গুপ্ত
               <WhackAMoleLevel
                 key="whack-level-5"
                 score={sharedState.score}
@@ -406,15 +465,10 @@ function GameManager() {
                 }}
                 levelNumber={5}
                 targetScore={50}
-                levelName="Whack-a-Mole II"
-                nextLevelName="Game Complete!"
+                levelName="চাঁদাবাজ গুপ্ত"
+                nextLevelName="গেম শেষ!"
               />
             )}
-
-            {/* Footer - Hidden on mobile for Maze levels (2 and 4) */}
-            <p className={`text-center text-green-400 text-xs mt-8 font-medium ${(sharedState.currentLevel === 2 || sharedState.currentLevel === 4) ? 'hidden md:block' : ''}`}>
-              © 2026 hit-the-hade | Designed & Developed by <a href="https://mntechdigital.com/" className="underline">MNTECH DIGITAL</a>
-            </p>
           </>
         )}
       </div>

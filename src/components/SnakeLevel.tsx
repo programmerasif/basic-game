@@ -5,6 +5,9 @@ interface SnakeLevelProps {
     score: number;
     onScoreUpdate: (newScore: number) => void;
     onGameReset: () => void;
+    levelNumber?: number;
+    targetScore?: number;
+    levelName?: string;
 }
 
 /**
@@ -17,7 +20,7 @@ interface SnakeLevelProps {
  * 3. Reach 30 total points to complete the game
  * Controls: Arrow keys or WASD to move, or tap on-screen directional buttons
  */
-function SnakeLevel({ score, onScoreUpdate, onGameReset }: SnakeLevelProps) {
+function SnakeLevel({ score, onScoreUpdate, onGameReset, levelNumber = 3, targetScore = 30, levelName = "রাজাকার গুপ্ত" }: SnakeLevelProps) {
     const [levelScore, setLevelScore] = useState(0);
     const [gameActive, setGameActive] = useState(true);
     const [gameOver, setGameOver] = useState(false);
@@ -61,15 +64,15 @@ function SnakeLevel({ score, onScoreUpdate, onGameReset }: SnakeLevelProps) {
             {/* Score and Level Display */}
             <div className="flex justify-around items-center mb-8 bg-green-950 bg-opacity-70 rounded-lg p-6 backdrop-blur-sm border-2 border-green-500">
                 <div className="text-center">
-                    <p className="text-green-300 text-sm font-semibold mb-1">LEVEL 3</p>
+                    <p className="text-green-300 text-sm font-semibold mb-1">লেভেল{levelNumber}</p>
                     <p className="text-3xl font-bold text-emerald-400 drop-shadow-lg">
-                        Snake Game
+                        {levelName}
                     </p>
                 </div>
                 <div className="h-16 w-1 bg-gradient-to-b from-green-500 to-transparent"></div>
                 <div className="text-center">
                     <p className="text-green-300 text-sm font-semibold mb-1">
-                        TOTAL SCORE
+                        মোট স্কোর
                     </p>
                     <p className="text-4xl font-bold text-lime-400 drop-shadow-lg">
                         {score}
@@ -78,7 +81,7 @@ function SnakeLevel({ score, onScoreUpdate, onGameReset }: SnakeLevelProps) {
                 <div className="h-16 w-1 bg-gradient-to-b from-green-500 to-transparent"></div>
                 <div className="text-center">
                     <p className="text-green-300 text-sm font-semibold mb-1">
-                        FOOD EATEN
+                        গুপ্ত ধরা
                     </p>
                     <p className="text-4xl font-bold text-teal-400 drop-shadow-lg">
                         {levelScore}
@@ -90,13 +93,13 @@ function SnakeLevel({ score, onScoreUpdate, onGameReset }: SnakeLevelProps) {
             {gameOver && (
                 <div className="mb-8 bg-gradient-to-r from-red-500 to-red-600 rounded-2xl p-8 backdrop-blur-sm animate-pulse border-4 border-red-300">
                     <p className="text-5xl font-bold text-white mb-4 text-center">
-                        💀 Game Over! 💀
+                        💀 গেম ওভার! 💀
                     </p>
                     <p className="text-2xl text-white text-center mb-2">
-                        You hit a wall or yourself!
+                        আপনি দেয়ালে বা নিজের সাথে ধাক্কা খেয়েছেন!
                     </p>
                     <p className="text-xl text-red-100 text-center mb-6">
-                        Food eaten this level: {levelScore}
+                        এই স্তরে গুপ্ত ধরা: {levelScore}
                     </p>
                     {score < 30 && (
                         <div className="flex justify-center gap-4">
@@ -104,13 +107,13 @@ function SnakeLevel({ score, onScoreUpdate, onGameReset }: SnakeLevelProps) {
                                 onClick={handleReset}
                                 className="px-8 py-4 bg-white text-red-600 font-bold text-lg rounded-lg shadow-lg hover:bg-red-100 transition-all transform hover:scale-105 active:scale-95 border-2 border-red-600"
                             >
-                                🔄 Try Again
+                                🔄 আবার চেষ্টা করুন
                             </button>
                             <button
                                 onClick={handleStartFromBeginning}
                                 className="px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold text-lg rounded-lg shadow-lg hover:from-orange-600 hover:to-red-600 transition-all transform hover:scale-105 active:scale-95 border-2 border-orange-600"
                             >
-                                🏠 Start from Beginning
+                                🏠 শুরু থেকে শুরু করুন
                             </button>
                         </div>
                     )}
@@ -128,21 +131,21 @@ function SnakeLevel({ score, onScoreUpdate, onGameReset }: SnakeLevelProps) {
                 />
             )}
             {/* Progress indicator for level completion */}
-            {!gameOver && score >= 30 && (
+            {!gameOver && score >= targetScore && (
                 <div className="mt-8 bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl p-8 backdrop-blur-sm animate-pulse border-4 border-green-300">
                     <p className="text-5xl font-bold text-white mb-4 text-center">
-                        🎉 Level Complete! 🎉
+                        🎉 লেভেলসম্পন্ন! 🎉
                     </p>
                     <p className="text-2xl text-white text-center">
-                        You've reached 30 points! Great job!
+                        আপনি {targetScore} পয়েন্ট অর্জন করেছেন! অসাধারণ!
                     </p>
                 </div>
             )}
 
-            {score < 30 && (
+            {score < targetScore && (
                 <div className="mt-8 text-center">
                     <p className="text-white text-lg">
-                        Score to complete: <span className="font-bold text-lime-400">{Math.max(0, 30 - score)}</span> more points
+                        সম্পন্ন করতে আরো: <span className="font-bold text-lime-400">{Math.max(0, targetScore - score)}</span> পয়েন্ট দরকার
                     </p>
                 </div>
             )}
