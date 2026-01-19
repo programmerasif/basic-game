@@ -196,12 +196,16 @@ function MazeGrid({
   }, [generateCollectibles, onMazeGridUpdate]);
 
   // Generate maze on component mount
-      useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        generateMaze(); 
-      }, [generateMaze]);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    generateMaze();
+  }, [generateMaze]);
 
-  // Handle keyboard controls for player movement
+  // Track current movement direction for auto-run
+  const [direction, setDirection] = useState<'up' | 'down' | 'left' | 'right'>('right');
+  const [isRunning, setIsRunning] = useState(true);
+
+  // Handle keyboard controls - just change direction
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       const key = event.key.toLowerCase();
@@ -211,24 +215,56 @@ function MazeGrid({
       }
 
       event.preventDefault();
-      let newRow = playerPosition.row;
-      let newCol = playerPosition.col;
 
+      // Change direction based on key pressed
       switch (key) {
         case "arrowup":
         case "w":
-          newRow = Math.max(0, playerPosition.row - 1);
+          setDirection('up');
           break;
         case "arrowdown":
         case "s":
-          newRow = Math.min(MAZE_SIZE - 1, playerPosition.row + 1);
+          setDirection('down');
           break;
         case "arrowleft":
         case "a":
-          newCol = Math.max(0, playerPosition.col - 1);
+          setDirection('left');
           break;
         case "arrowright":
         case "d":
+          setDirection('right');
+          break;
+      }
+
+      // Start running if paused
+      if (!isRunning) {
+        setIsRunning(true);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isRunning]);
+
+  // Auto-run movement effect
+  useEffect(() => {
+    if (!isRunning || mazeGrid.length === 0) return;
+
+    const moveInterval = setInterval(() => {
+      let newRow = playerPosition.row;
+      let newCol = playerPosition.col;
+
+      switch (direction) {
+        case 'up':
+          newRow = Math.max(0, playerPosition.row - 1);
+          break;
+        case 'down':
+          newRow = Math.min(MAZE_SIZE - 1, playerPosition.row + 1);
+          break;
+        case 'left':
+          newCol = Math.max(0, playerPosition.col - 1);
+          break;
+        case 'right':
           newCol = Math.min(MAZE_SIZE - 1, playerPosition.col + 1);
           break;
       }
@@ -237,11 +273,14 @@ function MazeGrid({
       if (mazeGrid[newRow] && mazeGrid[newRow][newCol]) {
         onPlayerPositionChange({ row: newRow, col: newCol });
       }
-    };
+      // If hitting a wall, stop running - player needs to change direction
+      else {
+        setIsRunning(false);
+      }
+    }, 200); // Move every 200ms
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [playerPosition, mazeGrid, onPlayerPositionChange]);
+    return () => clearInterval(moveInterval);
+  }, [direction, isRunning, playerPosition, mazeGrid, onPlayerPositionChange]);
 
   // Check if player has reached the destination
   useEffect(() => {
@@ -281,7 +320,7 @@ function MazeGrid({
     <div className="relative w-full aspect-[1/1.15] bg-gradient-to-br from-green-800 via-green-700 to-emerald-800 rounded-2xl overflow-hidden shadow-2xl border-4 border-green-500">
       {/* Grid cell-based maze with thinner walls */}
       <div
-        className="absolute inset-0 grid gap-0 p-14"
+        className="absolute inset-0 grid gap-0 p-4 md:p-14"
         style={{ gridTemplateColumns: `repeat(${MAZE_SIZE}, 1fr)` }}
       >
         {mazeGrid.map((row, rowIdx) =>
@@ -365,8 +404,9 @@ function MazeGrid({
 
       {/* Instructions overlay */}
       <div className="absolute top-4 right-4 bg-green-950 bg-opacity-90 rounded-xl p-3 text-xs text-green-100 max-w-xs border border-green-500 shadow-lg">
-        <p className="font-bold text-green-300 mb-1">🎮 Controls:</p>
-        <p>📍 Arrow Keys or WASD</p>
+        <p className="font-bold text-green-300 mb-1">🎮 Auto-Run Mode:</p>
+        <p>🏃 Character runs automatically</p>
+        <p>↔️ Press arrows to turn</p>
         <p>💰 Collect items</p>
         <p>🏰 Reach castle!</p>
       </div>

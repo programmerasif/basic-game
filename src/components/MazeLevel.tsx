@@ -88,50 +88,26 @@ function MazeLevel({ score, onScoreUpdate, onGameReset }: MazeLevelProps) {
     onGameReset();
   };
 
-  // Mobile control handlers - with wall collision detection
+  // Mobile control handlers - dispatch keyboard events to change direction
   const handleMoveUp = useCallback(() => {
-    setPlayerPosition((prev) => {
-      const newRow = Math.max(0, prev.row - 1);
-      // Check if the new position is a valid path (not a wall)
-      if (mazeGrid[newRow] && mazeGrid[newRow][prev.col]) {
-        return { ...prev, row: newRow };
-      }
-      return prev; // Don't move if hitting a wall
-    });
-  }, [mazeGrid]);
+    const upEvent = new KeyboardEvent("keydown", { key: "ArrowUp" });
+    window.dispatchEvent(upEvent);
+  }, []);
 
   const handleMoveDown = useCallback(() => {
-    setPlayerPosition((prev) => {
-      const newRow = Math.min(MAZE_SIZE - 1, prev.row + 1);
-      // Check if the new position is a valid path (not a wall)
-      if (mazeGrid[newRow] && mazeGrid[newRow][prev.col]) {
-        return { ...prev, row: newRow };
-      }
-      return prev; // Don't move if hitting a wall
-    });
-  }, [mazeGrid]);
+    const downEvent = new KeyboardEvent("keydown", { key: "ArrowDown" });
+    window.dispatchEvent(downEvent);
+  }, []);
 
   const handleMoveLeft = useCallback(() => {
-    setPlayerPosition((prev) => {
-      const newCol = Math.max(0, prev.col - 1);
-      // Check if the new position is a valid path (not a wall)
-      if (mazeGrid[prev.row] && mazeGrid[prev.row][newCol]) {
-        return { ...prev, col: newCol };
-      }
-      return prev; // Don't move if hitting a wall
-    });
-  }, [mazeGrid]);
+    const leftEvent = new KeyboardEvent("keydown", { key: "ArrowLeft" });
+    window.dispatchEvent(leftEvent);
+  }, []);
 
   const handleMoveRight = useCallback(() => {
-    setPlayerPosition((prev) => {
-      const newCol = Math.min(MAZE_SIZE - 1, prev.col + 1);
-      // Check if the new position is a valid path (not a wall)
-      if (mazeGrid[prev.row] && mazeGrid[prev.row][newCol]) {
-        return { ...prev, col: newCol };
-      }
-      return prev; // Don't move if hitting a wall
-    });
-  }, [mazeGrid]);
+    const rightEvent = new KeyboardEvent("keydown", { key: "ArrowRight" });
+    window.dispatchEvent(rightEvent);
+  }, []);
 
   return (
     <div className="w-full">
