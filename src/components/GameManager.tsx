@@ -14,7 +14,7 @@ import chor from "../assets/chor.png"
 import commonMusic from "../assets/music/common.mp3";
 import victoryMusic from "../assets/music/victory.mp3";
 import pointSound from "../assets/music/point.mp3";
-import { ArrowRightLeft } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 
 interface SharedGameState {
@@ -293,9 +293,9 @@ function GameManager() {
           <>
             {/* Global Header - Hidden on mobile for Maze levels (2 and 4) */}
             <div className={`text-center mb-8 ${(sharedState.currentLevel === 2 || sharedState.currentLevel === 4) ? 'hidden md:block' : ''}`}>
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-lg">
+              {/* <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-lg">
                 � গুপ্ত ধর 🎯
-              </h1>
+              </h1> */}
               {gameStarted && (
                 <div className="flex justify-center gap-8 mb-6 bg-green-950 bg-opacity-70 rounded-lg p-4 backdrop-blur-sm border-2 border-green-500">
                   <div className="text-center">
@@ -337,28 +337,28 @@ function GameManager() {
 
                   {/* Score Display */}
                   <div className="flex justify-end mb-4">
-                    <div className="bg-green-900 bg-opacity-70 px-4 py-2 rounded-lg border border-green-500">
+                    <div className="bg-green-900 bg-opacity-70 px-4 py-2 rounded-lg border border-green-500 hidden md:block">
                       <span className="text-green-300 text-sm">মোট স্কোর: </span>
                       <span className="text-lime-400 font-bold">{sharedState.score}</span>
                     </div>
                   </div>
 
                   {/* Flowchart Level Progression */}
-                  <div className="w-[95%] mx-auto flex flex-wrap md:flex-nowrap justify-center items-center gap-2 md:gap-4 mb-8 p-4 bg-green-900 bg-opacity-40 rounded-xl border border-green-600">
+                  <div className="w-[95%] mx-auto grid grid-cols-1 md:grid-cols-5 justify-center items-center gap-2 md:gap-4 mb-8 p-4 bg-green-900 bg-opacity-40 rounded-xl border border-green-600">
                     {/* Level 1 */}
-                    <div className="flex flex-col items-center">
-                      <div className="bg-gradient-to-r from-green-600 to-emerald-600 px-3 md:px-6 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg flex items-center gap-2">
+                    <div className="flex flex-col items-center w-full">
+                      <div className="bg-gradient-to-r w-full from-green-600 to-emerald-600 px-3 md:px-6 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg flex items-center justify-center gap-2">
                         <img src={dhorshokIcon} alt=""  className="rounded w-10"/>
                         <p className="text-white font-bold text-xs md:text-sm">ধর্ষক গুপ্ত</p>
                       </div>
                     </div>
                     <div className="text-green-400 text-xl md:text-2xl">
-                      <ArrowRightLeft  className="text-white"/>
+                      <ArrowRight  className="text-white hidden md:block items-center w-full"/>
                     </div>
 
                     {/* Level 2 */}
-                    <div className="flex flex-col items-center">
-                      <div className="bg-gradient-to-r from-green-600 to-emerald-600 px-3 md:px-6 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg flex items-center gap-2">
+                    <div className="flex flex-col items-center w-full">
+                      <div className="bg-gradient-to-r w-full from-green-600 to-emerald-600 px-3 md:px-6 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg flex items-center justify-center gap-2">
                         <span className="text-lg md:text-xl">
                           <img src={chor} alt=""  className="rounded w-10"/>
                         </span>
@@ -366,12 +366,12 @@ function GameManager() {
                       </div>
                     </div>
                     <div className="text-green-400 text-xl md:text-2xl">
-                      <ArrowRightLeft  className="text-white"/>
+                      <ArrowRight  className="text-white hidden md:block items-center w-full"/>
                     </div>
 
                     {/* Level 3 */}
-                    <div className="flex flex-col items-center">
-                      <div className="bg-gradient-to-r from-green-600 to-emerald-600 px-3 md:px-6 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg flex items-center gap-2">
+                    <div className="flex flex-col items-center w-full">
+                      <div className="bg-gradient-to-r w-full from-green-600 to-emerald-600 px-3 md:px-6 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg flex items-center justify-center gap-2">
                         <span className="text-lg md:text-xl">
                           <img src={razakar} alt=""  className="rounded w-10"/>
                         </span>
@@ -379,12 +379,12 @@ function GameManager() {
                       </div>
                     </div>
                     <div className="text-green-400 text-xl md:text-2xl">
-                      <ArrowRightLeft  className="text-white"/>
+                      <ArrowRight  className="text-white hidden md:block items-center w-full"/>
                     </div>
 
                     {/* Level 4 */}
-                    <div className="flex flex-col items-center">
-                      <div className="bg-gradient-to-r from-green-600 to-emerald-600 px-3 md:px-6 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg flex items-center gap-2">
+                    <div className="flex flex-col items-center w-full">
+                      <div className="bg-gradient-to-r from-green-600 to-emerald-600 px-3 md:px-6 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg flex items-center justify-center w-full gap-2">
                         <span className="text-lg md:text-xl">
                           <img src={rog} alt=""  className="rounded w-10"/>
                         </span>
@@ -392,14 +392,14 @@ function GameManager() {
                       </div>
                     </div>
                     <div className="text-green-400 text-xl md:text-2xl">
-                      <ArrowRightLeft  className="text-white"/>
+                      <ArrowRight  className="text-white hidden md:block items-center w-full"/>
                     </div>
 
                     {/* Level 5 */}
-                    <div className="flex flex-col items-center">
-                      <div className="bg-gradient-to-r from-green-600 to-emerald-600 px-3 md:px-6 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg flex items-center gap-2">
+                    <div className="flex flex-col items-center w-full">
+                      <div className="bg-gradient-to-r from-green-600 to-emerald-600 px-3 md:px-6 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg flex items-center justify-center w-full gap-2">
                         <span className="text-lg md:text-xl">
-                          <img src={chadabaj} alt=""  className="rounded w-10"/>
+                          <img src={chadabaj} alt=""  className="rounded w-10 "/>
                         </span>
                         <p className="text-white font-bold text-xs md:text-sm">চাঁদাবাজ গুপ্ত</p>
                       </div>
@@ -407,7 +407,7 @@ function GameManager() {
                   </div>
 
                   {/* Game Rules */}
-                  <div className="text-left max-w-lg mx-auto mb-8">
+                  <div className="text-left max-w-lg mx-auto mb-8 hidden md:block">
                     <h3 className="text-xl font-bold text-emerald-400 mb-4 text-center">
                       গুপ্ত ধর গেম নিয়ম
                     </h3>

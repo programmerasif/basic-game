@@ -25,10 +25,10 @@ interface MazeLevelProps {
  * No time limit - explore at your own pace!
  */
 function MazeLevel({ score, onScoreUpdate, onGameReset, levelNumber = 2, targetScore = 20, levelName = "Maze Adventure" }: MazeLevelProps) {
-  // Player starting position - on a valid path in the maze (row 0, col 5 is path)
+  // Player starting position - in the middle of the maze on a valid path
   const [playerPosition, setPlayerPosition] = useState<Position>({
-    row: 0,
-    col: 5,
+    row: 16,
+    col: 12,
   });
 
   // Track items collected in this level
