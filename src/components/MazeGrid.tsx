@@ -4,6 +4,7 @@ import khuni1 from "../assets/khuni/khuni1.png";
 import khuni2 from "../assets/khuni/khuni2.png";
 import khuni3 from "../assets/khuni/khuni3.png";
 import khuno4 from "../assets/khuni/khuno4.png";
+import run from "../assets/run.png";
 
 export interface Collectible {
   id: string;
@@ -427,7 +428,7 @@ function MazeGrid({
     <div className="relative w-full h-[65vh] md:h-auto md:aspect-[1/1.15] bg-[#E8FDEF] rounded-none md:rounded-2xl overflow-hidden shadow-2xl border-0 md:border-4 border-[#E8FDEF]">
       {/* Grid cell-based maze with thinner walls */}
       <div
-        className="absolute inset-0 grid gap-0 p-2 md:p-14"
+        className="absolute inset-0 grid gap-0 p-2 md:p-5"
         style={{ gridTemplateColumns: `repeat(${MAZE_SIZE}, 1fr)` }}
       >
         {mazeGrid.map((row, rowIdx) =>
@@ -457,7 +458,7 @@ function MazeGrid({
       {/* Destination marker (goal) - positioned within the padded area */}
       {destination && (
         <div
-          className="absolute inset-0 p-2 md:p-14 pointer-events-none"
+          className="absolute inset-0 p-2 md:p-5 pointer-events-none"
         >
           <div
             className="absolute flex items-center justify-center text-4xl md:text-5xl animate-pulse drop-shadow-lg"
@@ -474,7 +475,7 @@ function MazeGrid({
       )}
 
       {/* Collectibles layer - positioned within the padded area */}
-      <div className="absolute inset-0 p-2 md:p-14 pointer-events-none">
+      <div className="absolute inset-0 p-2 md:p-5 pointer-events-none">
         <div className="relative w-full h-full">
           {collectibles.map((collectible, index) => {
             const bgColors = ['bg-red-400', 'bg-blue-400', 'bg-yellow-400', 'bg-purple-400'];
@@ -486,8 +487,8 @@ function MazeGrid({
                 style={{
                   left: `${(collectible.position.col * 100) / MAZE_SIZE}%`,
                   top: `${(collectible.position.row * 100) / MAZE_SIZE}%`,
-                  width: `${(100 / MAZE_SIZE) * 1.6}%`,
-                  height: `${(100 / MAZE_SIZE) * 1.6}%`,
+                  width: `${(100 / MAZE_SIZE) * 1.8}%`,
+                  height: `${(100 / MAZE_SIZE) * 1.8}%`,
                   transform: 'translate(-22%, -22%)',
                 }}
               >
@@ -504,31 +505,25 @@ function MazeGrid({
 
       {/* Player - positioned within the padded area */}
       {mazeGrid.length > 0 && (
-        <div className="absolute inset-0 p-2 md:p-14 pointer-events-none">
+        <div className="absolute inset-0 p-2 md:p-5 pointer-events-none">
           <div className="relative w-full h-full">
             <div
-              className="absolute flex items-center justify-center text-3xl md:text-4xl transition-all duration-100 animate-pulse"
+              className="absolute flex items-center justify-center transition-all "
               style={{
                 left: `${(playerPosition.col * 100) / MAZE_SIZE}%`,
                 top: `${(playerPosition.row * 100) / MAZE_SIZE}%`,
-                width: `${100 / MAZE_SIZE}%`,
-                height: `${100 / MAZE_SIZE}%`,
+                width: `${(100 / MAZE_SIZE) * 2.1}%`,
+                height: `${(100 / MAZE_SIZE) * 2.1}%`,
+                transform: 'translate(-30%, -30%)',
               }}
             >
-              🧑
+              <img src={run} alt="player" className="w-full h-full object-contain drop-shadow-lg rounded-full ring-1 ring-green-800 bg-green-600" />
             </div>
           </div>
         </div>
       )}
 
-      {/* Instructions overlay - Hidden on mobile */}
-      <div className="hidden md:block absolute top-4 right-4 bg-green-950 bg-opacity-90 rounded-xl p-3 text-xs text-green-100 max-w-xs border border-green-500 shadow-lg">
-        <p className="font-bold text-green-300 mb-1">🎮 Auto-Run Mode:</p>
-        <p>🏃 Character runs automatically</p>
-        <p>↔️ Press arrows to turn</p>
-        <p>💰 Collect items</p>
-        <p>🏰 Reach castle!</p>
-      </div>
+   
 
       {/* Decorative corner elements */}
       <div className="absolute top-2 left-2 w-8 h-8 border-t-4 border-l-4 border-green-400 rounded-tl-lg opacity-50"></div>

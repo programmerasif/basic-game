@@ -236,7 +236,7 @@ function GameManager() {
   };
 
   return (
-    <div className={`min-h-screen bg-gradient-to-br from-slate-950 via-green-950 to-slate-900 flex items-center justify-center ${gameStarted && (sharedState.currentLevel === 2 || sharedState.currentLevel === 4) ? 'p-0 md:p-4 fixed md:relative inset-0 overflow-hidden md:overflow-visible' : 'p-4'}`}>
+    <div className="min-h-screen max-w bg-gradient-to-br from-slate-950 via-green-950 to-slate-900 flex items-center justify-center p-2 md:p-4">
       {/* Level Start Modal */}
       <LevelStartModal
         isOpen={showLevelStartModal}
@@ -259,31 +259,31 @@ function GameManager() {
         onReturnHome={handleReturnHome}
       />
 
-      <div className={`w-full ${gameStarted && sharedState.currentLevel === 2 ? ' max-w-7xl h-screen md:h-auto overflow-hidden' : 'max-w-7xl'}`}>
+      <div className="w-full  mx-auto">
         {/* Game Completion Screen */}
         {gameCompleted ? (
-          <div className="text-center px-4">
-            <div className="bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 rounded-2xl md:rounded-3xl p-6 sm:p-8 md:p-12 backdrop-blur-sm animate-pulse shadow-2xl border-2 md:border-4 border-green-400">
-              <p className="text-4xl sm:text-5xl md:text-6xl mb-4 sm:mb-6">🏆 🎊 🏆</p>
-              <h2 className="text-xl sm:text-4xl md:text-5xl font-bold text-white mb-4 sm:mb-6 drop-shadow-lg px-2">
+          <div className="text-center px-2 md:px-4">
+            <div className="bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 rounded-xl md:rounded-2xl p-6 md:p-8 backdrop-blur-sm animate-pulse shadow-2xl border-2 md:border-4 border-green-400">
+              <p className="text-4xl md:text-5xl mb-3 md:mb-4">🏆 🎊 🏆</p>
+              <h2 className="text-2xl md:text-4xl font-bold text-white mb-3 md:mb-4 drop-shadow-lg">
                 অভিনন্দন!
               </h2>
-              <p className="text-xl sm:text-2xl md:text-3xl text-white mb-3 sm:mb-4 drop-shadow-lg px-2">
+              <p className="text-lg md:text-2xl text-white mb-2 md:mb-3 drop-shadow-lg">
                 আপনি সব গুপ্ত ধরেছেন!
               </p>
-              <p className="text-lg sm:text-xl md:text-2xl text-green-50 mb-6 sm:mb-8">
-                মোট স্কোর: <span className="font-bold text-2xl sm:text-3xl md:text-4xl">{sharedState.score}</span>
+              <p className="text-base md:text-xl text-green-50 mb-4 md:mb-6">
+                মোট স্কোর: <span className="font-bold text-xl md:text-3xl">{sharedState.score}</span>
               </p>
-              <div className="space-y-2 sm:space-y-3 text-left max-w-2xl mx-auto text-white mb-6 sm:mb-10 bg-green-900 bg-opacity-60 rounded-xl p-4 sm:p-6 border-2 border-green-400">
-                <p className="text-sm sm:text-base md:text-lg">✅ লেভেল১: ধর্ষক গুপ্ত - ধরা হয়েছে!</p>
-                <p className="text-sm sm:text-base md:text-lg">✅ লেভেল২: খুনি গুপ্ত - ধরা হয়েছে!</p>
-                <p className="text-sm sm:text-base md:text-lg">✅ লেভেল৩: রাজাকার গুপ্ত - ধরা হয়েছে!</p>
-                <p className="text-sm sm:text-base md:text-lg">✅ লেভেল৪: রগকাটা-সন্ত্রাসি গুপ্ত - ধরা হয়েছে!</p>
-                <p className="text-sm sm:text-base md:text-lg">✅ লেভেল৫: চাঁদাবাজ গুপ্ত - ধরা হয়েছে!</p>
+              <div className="space-y-2 md:space-y-3 text-left max-w-2xl mx-auto text-white mb-4 md:mb-6 bg-green-900 bg-opacity-60 rounded-xl p-3 md:p-4 border-2 border-green-400">
+                <p className="text-sm md:text-base">✅ লেভেল১: ধর্ষক গুপ্ত - ধরা হয়েছে!</p>
+                <p className="text-sm md:text-base">✅ লেভেল২: খুনি গুপ্ত - ধরা হয়েছে!</p>
+                <p className="text-sm md:text-base">✅ লেভেল৩: রাজাকার গুপ্ত - ধরা হয়েছে!</p>
+                <p className="text-sm md:text-base">✅ লেভেল৪: রগকাটা-সন্ত্রাসি গুপ্ত - ধরা হয়েছে!</p>
+                <p className="text-sm md:text-base">✅ লেভেল৫: চাঁদাবাজ গুপ্ত - ধরা হয়েছে!</p>
               </div>
               <button
                 onClick={() => window.location.reload()}
-                className="px-8 sm:px-10 md:px-12 py-3 sm:py-4 bg-green-400 text-slate-900 font-bold text-lg sm:text-xl rounded-lg shadow-lg hover:bg-emerald-300 transition-all transform hover:scale-105 active:scale-95 border-2 border-green-600 w-full sm:w-auto"
+                className="px-8 md:px-12 py-3 md:py-4 bg-green-400 text-slate-900 font-bold text-base md:text-lg rounded-lg shadow-lg hover:bg-emerald-300 transition-all transform hover:scale-105 active:scale-95 border-2 border-green-600 w-full sm:w-auto"
               >
                 আবার খেলুন
               </button>
@@ -291,168 +291,115 @@ function GameManager() {
           </div>
         ) : (
           <>
-            {/* Global Header - Hidden on mobile for Maze levels (2 and 4) */}
-            <div className={`text-center mb-8 ${(sharedState.currentLevel === 2 || sharedState.currentLevel === 4) ? 'hidden md:block' : ''}`}>
-              {/* <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-lg">
-                � গুপ্ত ধর 🎯
-              </h1> */}
+            {/* Global Header */}
+            {/* <div className="text-center mb-3 md:mb-4">
               {gameStarted && (
-                <div className="flex justify-center gap-8 mb-6 bg-green-950 bg-opacity-70 rounded-lg p-4 backdrop-blur-sm border-2 border-green-500">
+                <div className="flex justify-center gap-4 md:gap-6 mb-4 md:mb-6 bg-green-950 bg-opacity-70 rounded-lg p-3 md:p-4 backdrop-blur-sm border-2 border-green-500">
                   <div className="text-center">
-                    <p className="text-green-300 text-sm font-semibold mb-1">
+                    <p className="text-green-300 text-xs md:text-sm font-semibold mb-1">
                       স্তর
                     </p>
-                    <p className="text-3xl font-bold text-emerald-400 drop-shadow-lg">
+                    <p className="text-xl md:text-2xl font-bold text-emerald-400 drop-shadow-lg">
                       {sharedState.currentLevel}
                     </p>
                   </div>
-                  <div className="h-12 w-1 bg-gradient-to-b from-green-500 to-transparent"></div>
+                  <div className="h-10 md:h-12 w-1 bg-gradient-to-b from-green-500 to-transparent"></div>
                   <div className="text-center">
-                    <p className="text-green-300 text-sm font-semibold mb-1">
+                    <p className="text-green-300 text-xs md:text-sm font-semibold mb-1">
                       মোট স্কোর
                     </p>
-                    <p className="text-3xl font-bold text-lime-400 drop-shadow-lg">
+                    <p className="text-xl md:text-2xl font-bold text-lime-400 drop-shadow-lg">
                       {sharedState.score}
                     </p>
                   </div>
                 </div>
               )}
-            </div>
+            </div> */}
 
             {/* Level Content */}
             {!gameStarted ? (
               // Start Screen - Flowchart Style
               <div className="text-center">
-                <div className="bg-green-950 bg-opacity-60 rounded-2xl p-6 md:p-10 backdrop-blur-sm mb-8 border-2 border-green-500">
+                <div className="bg-green-950 bg-opacity-60 rounded-xl p-4 md:p-6 backdrop-blur-sm border-2 border-green-500 w-full">
                   {/* Title */}
-                  <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
+                  <h2 className="text-3xl md:text-4xl font-bold text-white mb-2 md:mb-3">
                     গুপ্ত ধর
                   </h2>
-                  <p className="text-green-300 text-lg mb-6">
+                  <p className="text-green-300 text-base md:text-lg mb-3 md:mb-4">
                     গুপ্ত ধর গেম-এ আপনাকে স্বাগতম
                   </p>
-                  <p className="text-green-300 text-lg mb-6">
+                  <p className="text-green-300 text-sm md:text-base mb-4 md:mb-5">
                     ধর্ষক, খুনি, সন্ত্রাসী-রগকাটা, রাজাকার, চাঁদাবাজ গুপ্ত ধরতে তৈরী হোন।
                   </p>
 
                   {/* Score Display */}
-                  <div className="flex justify-end mb-4">
-                    <div className="bg-green-900 bg-opacity-70 px-4 py-2 rounded-lg border border-green-500 hidden md:block">
-                      <span className="text-green-300 text-sm">মোট স্কোর: </span>
-                      <span className="text-lime-400 font-bold">{sharedState.score}</span>
+                  <div className="flex justify-end mb-4 md:mb-6">
+                    <div className="bg-green-900 bg-opacity-70 px-4 py-2 rounded-lg border border-green-500">
+                      <span className="text-green-300 text-sm md:text-base">মোট স্কোর: </span>
+                      <span className="text-lime-400 font-bold text-base md:text-lg">{sharedState.score}</span>
                     </div>
                   </div>
 
                   {/* Flowchart Level Progression */}
-                  <div className="w-[95%] mx-auto grid grid-cols-1 md:grid-cols-5 justify-center items-center gap-2 md:gap-4 mb-8 p-4 bg-green-900 bg-opacity-40 rounded-xl border border-green-600">
+                  <div className="w-full mx-auto grid grid-cols-1 md:grid-cols-5 justify-center items-center gap-2 md:gap-3 mb-6 md:mb-8 p-3 md:p-4 bg-green-900 bg-opacity-40 rounded-xl border border-green-600">
                     {/* Level 1 */}
                     <div className="flex flex-col items-center w-full">
-                      <div className="bg-gradient-to-r w-full from-green-600 to-emerald-600 px-3 md:px-6 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg flex items-center justify-center gap-2">
-                        <img src={dhorshokIcon} alt=""  className="rounded w-10"/>
+                      <div className="bg-gradient-to-r w-full from-green-600 to-emerald-600 px-3 md:px-4 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg flex items-center justify-center gap-2">
+                        <img src={dhorshokIcon} alt="" className="rounded w-6 md:w-8" />
                         <p className="text-white font-bold text-xs md:text-sm">ধর্ষক গুপ্ত</p>
                       </div>
                     </div>
                     <div className="text-green-400 text-xl md:text-2xl">
-                      <ArrowRight  className="text-white hidden md:block items-center w-full"/>
+                      <ArrowRight className="text-white hidden md:block items-center w-full" />
                     </div>
 
                     {/* Level 2 */}
                     <div className="flex flex-col items-center w-full">
-                      <div className="bg-gradient-to-r w-full from-green-600 to-emerald-600 px-3 md:px-6 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg flex items-center justify-center gap-2">
-                        <span className="text-lg md:text-xl">
-                          <img src={chor} alt=""  className="rounded w-10"/>
-                        </span>
+                      <div className="bg-gradient-to-r w-full from-green-600 to-emerald-600 px-3 md:px-4 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg flex items-center justify-center gap-2">
+                        <img src={chor} alt="" className="rounded w-6 md:w-8" />
                         <p className="text-white font-bold text-xs md:text-sm">খুনি গুপ্ত</p>
                       </div>
                     </div>
                     <div className="text-green-400 text-xl md:text-2xl">
-                      <ArrowRight  className="text-white hidden md:block items-center w-full"/>
+                      <ArrowRight className="text-white hidden md:block items-center w-full" />
                     </div>
 
                     {/* Level 3 */}
                     <div className="flex flex-col items-center w-full">
-                      <div className="bg-gradient-to-r w-full from-green-600 to-emerald-600 px-3 md:px-6 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg flex items-center justify-center gap-2">
-                        <span className="text-lg md:text-xl">
-                          <img src={razakar} alt=""  className="rounded w-10"/>
-                        </span>
+                      <div className="bg-gradient-to-r w-full from-green-600 to-emerald-600 px-3 md:px-4 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg flex items-center justify-center gap-2">
+                        <img src={razakar} alt="" className="rounded w-6 md:w-8" />
                         <p className="text-white font-bold text-xs md:text-sm">রাজাকার গুপ্ত</p>
                       </div>
                     </div>
                     <div className="text-green-400 text-xl md:text-2xl">
-                      <ArrowRight  className="text-white hidden md:block items-center w-full"/>
+                      <ArrowRight className="text-white hidden md:block items-center w-full" />
                     </div>
 
                     {/* Level 4 */}
                     <div className="flex flex-col items-center w-full">
-                      <div className="bg-gradient-to-r from-green-600 to-emerald-600 px-3 md:px-6 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg flex items-center justify-center w-full gap-2">
-                        <span className="text-lg md:text-xl">
-                          <img src={rog} alt=""  className="rounded w-10"/>
-                        </span>
+                      <div className="bg-gradient-to-r from-green-600 to-emerald-600 px-3 md:px-4 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg flex items-center justify-center w-full gap-2">
+                        <img src={rog} alt="" className="rounded w-6 md:w-8" />
                         <p className="text-white font-bold text-xs md:text-sm">রগকাটা-সন্ত্রাসি গুপ্ত</p>
                       </div>
                     </div>
                     <div className="text-green-400 text-xl md:text-2xl">
-                      <ArrowRight  className="text-white hidden md:block items-center w-full"/>
+                      <ArrowRight className="text-white hidden md:block items-center w-full" />
                     </div>
 
                     {/* Level 5 */}
                     <div className="flex flex-col items-center w-full">
-                      <div className="bg-gradient-to-r from-green-600 to-emerald-600 px-3 md:px-6 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg flex items-center justify-center w-full gap-2">
-                        <span className="text-lg md:text-xl">
-                          <img src={chadabaj} alt=""  className="rounded w-10 "/>
-                        </span>
+                      <div className="bg-gradient-to-r from-green-600 to-emerald-600 px-3 md:px-4 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg flex items-center justify-center w-full gap-2">
+                        <img src={chadabaj} alt="" className="rounded w-6 md:w-8" />
                         <p className="text-white font-bold text-xs md:text-sm">চাঁদাবাজ গুপ্ত</p>
                       </div>
                     </div>
                   </div>
 
-                  {/* Game Rules */}
-                  <div className="text-left max-w-lg mx-auto mb-8 hidden md:block">
-                    <h3 className="text-xl font-bold text-emerald-400 mb-4 text-center">
-                      গুপ্ত ধর গেম নিয়ম
-                    </h3>
-                    <div className="space-y-3 text-green-200">
-                      <div className="flex items-start gap-2">
-                        <span className="text-pink-400">👤</span>
-                        <div>
-                          <span className="text-white font-bold">স্টেজ 1 : ধর্ষক গুপ্ত : উপরে ধর্মের বেশ, নারী দেখলেই জেগে উঠে দুষ্টু মন</span>
-                          <p className="text-sm">৫ টি ধর্ষক গুপ্তকে ধরলে, পরের স্টেজ হবে খুনি গুপ্ত।</p>
-                        </div>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <span className="text-pink-400">👤</span>
-                        <div>
-                          <span className="text-white font-bold"> খুনি গুপ্ত: খুনের নেশায় মত্ত, ওত পেতে থাকা গুপ্ত</span>
-                          <p className="text-sm">৫ টি খুনি গুপ্তকে ধরলে, পরের স্টেজ হবে রাজাকার গুপ্ত।</p>
-                        </div>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <span className="text-pink-400">👤</span>
-                        <div>
-                          <span className="text-white font-bold">স্টেজ 3 : রাজাকার গুপ্ত: ৭১ এ দেশের সাথে বেইমানির আদর্শ এখনো লুকিয়ে আছে অন্তরে</span>
-                          <p className="text-sm">৫ টি রাজাকার গুপ্তকে ধরলে, পরের স্টেজ হবে রগকাটা-সন্ত্রাসি গুপ্ত।</p>
-                        </div>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <span className="text-pink-400">👤</span>
-                        <div>
-                          <span className="text-white font-bold">রগকাটা-সন্ত্রাসি গুপ্ত: সাধারণের মাঝে লুকিয়ে আছে হিংস্র হায়নারা</span>
-                          <p className="text-sm">৫টি রগকাটা-সন্ত্রাসি গুপ্তকে ধরলে, পরের স্টেজ হবে চাঁদাবাজ গুপ্ত।</p>
-                        </div>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <span className="text-pink-400">👤</span>
-                        <div>
-                          <span className="text-white font-bold">চাঁদাবাজ গুপ্ত ধর্মের নামে হাদিয়া বলে চাঁদা চেয়ে বেড়ায় গুপ্তরা</span>
-                          <p className="text-sm">৫ টি চাঁদাবাজ গুপ্তকে ধরে গেম শেষ করুন।</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+
 
                   <button
                     onClick={startGame}
-                    className="px-12 py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-bold text-xl rounded-lg shadow-lg hover:from-green-600 hover:to-emerald-600 transition-all transform hover:scale-105 active:scale-95 border-2 border-green-400"
+                    className="mt-4 md:mt-6 px-8 md:px-12 py-3 md:py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-bold text-base md:text-lg rounded-lg shadow-lg hover:from-green-600 hover:to-emerald-600 transition-all transform hover:scale-105 active:scale-95 border-2 border-green-400"
                   >
                     শুরু করুন
                   </button>

@@ -114,7 +114,7 @@ function WhackAMoleLevel({
   }
 
   return (
-    <div className="w-full">
+    <div className="md:max-w-sm mx-auto">
       {/* Score and Timer Display */}
       <div className="flex justify-around items-center mb-8 bg-green-950 bg-opacity-70 rounded-lg p-6 backdrop-blur-sm border-2 border-green-500">
         <div className="text-center">

@@ -92,32 +92,12 @@ function MazeLevel({ score, onScoreUpdate, onGameReset, levelNumber = 2, targetS
     onGameReset();
   };
 
-  // // Mobile control handlers - dispatch keyboard events to change direction
-  // const handleMoveUp = useCallback(() => {
-  //   const upEvent = new KeyboardEvent("keydown", { key: "ArrowUp" });
-  //   window.dispatchEvent(upEvent);
-  // }, []);
-
-  // const handleMoveDown = useCallback(() => {
-  //   const downEvent = new KeyboardEvent("keydown", { key: "ArrowDown" });
-  //   window.dispatchEvent(downEvent);
-  // }, []);
-
-  // const handleMoveLeft = useCallback(() => {
-  //   const leftEvent = new KeyboardEvent("keydown", { key: "ArrowLeft" });
-  //   window.dispatchEvent(leftEvent);
-  // }, []);
-
-  // const handleMoveRight = useCallback(() => {
-  //   const rightEvent = new KeyboardEvent("keydown", { key: "ArrowRight" });
-  //   window.dispatchEvent(rightEvent);
-  // }, []);
 
   return (
-    <div className="w-full h-screen md:h-auto overflow-hidden md:overflow-visible flex flex-col">
+    <div className="max-w-sm mx-auto h-screen md:h-auto overflow-hidden md:overflow-visible flex flex-col">
       {/* Score and Level Display - Hidden on mobile */}
       <div className="flex md:hidden justify-around items-center bg-green-950 bg-opacity-70 rounded-lg p-1 backdrop-blur-sm border-2 border-green-500">
-        <p className="text-4xl font-bold text-teal-400 drop-shadow-lg">
+        <p className="text-2xl font-bold text-teal-400 drop-shadow-lg">
           {levelScore}
         </p>
         <p className="text-4xl font-bold text-lime-400 drop-shadow-lg">
@@ -138,10 +118,10 @@ function MazeLevel({ score, onScoreUpdate, onGameReset, levelNumber = 2, targetS
 
         </div>
       </div>
-      <div className="hidden md:flex justify-around items-center mb-8 bg-green-950 bg-opacity-70 rounded-lg p-6 backdrop-blur-sm border-2 border-green-500">
+      <div className="hidden md:flex justify-around items-center mb-2 bg-green-950 bg-opacity-70 rounded-lg p-1 backdrop-blur-sm border-2 border-green-500">
         <div className="text-center">
           <p className="text-green-300 text-sm font-semibold mb-1">লেভেল{levelNumber}</p>
-          <p className="text-3xl font-bold text-emerald-400 drop-shadow-lg">
+          <p className="text-xl font-bold text-emerald-400 drop-shadow-lg">
             {levelName}
           </p>
         </div>
@@ -225,7 +205,7 @@ function MazeLevel({ score, onScoreUpdate, onGameReset, levelNumber = 2, targetS
       )}
 
       {/* Instructions and Controls - Hidden on mobile */}
-      <div className="hidden md:block bg-green-950 bg-opacity-60 rounded-xl p-6 backdrop-blur-sm mb-8 border-2 border-green-500">
+      {/* <div className="hidden md:block bg-green-950 bg-opacity-60 rounded-xl p-6 backdrop-blur-sm mb-8 border-2 border-green-500">
         <h3 className="text-xl font-bold text-white mb-4">
           📍 লেভেল{levelNumber}: {levelName}
         </h3>
@@ -266,13 +246,13 @@ function MazeLevel({ score, onScoreUpdate, onGameReset, levelNumber = 2, targetS
 
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Game Actions - Hidden on mobile */}
-      <div className="flex justify-center gap-4">
+      <div className="flex justify-center gap-4 text-sm">
         <button
           onClick={handleReset}
-          className="px-8 py-3 bg-gradient-to-r from-red-500 to-orange-500 text-white font-bold rounded-lg shadow-lg hover:from-red-600 hover:to-orange-600 transition-all transform hover:scale-105 active:scale-95 border-2 border-red-600"
+          className="px-8  py-3 bg-gradient-to-r from-red-500 to-orange-500 text-white font-bold rounded-lg shadow-lg hover:from-red-600 hover:to-orange-600 transition-all transform hover:scale-105 active:scale-95 border-2 border-red-600"
         >
           🏠 শুরুতে ফিরে যান
         </button>
@@ -285,13 +265,13 @@ function MazeLevel({ score, onScoreUpdate, onGameReset, levelNumber = 2, targetS
       </div>
 
       {/* Tips Section - Hidden on mobile */}
-      <div className="hidden md:block mt-8 bg-gradient-to-r from-green-900 to-emerald-900 bg-opacity-50 rounded-lg p-4 backdrop-blur-sm border-2 border-green-500">
+      {/* <div className="hidden md:block mt-8 bg-gradient-to-r from-green-900 to-emerald-900 bg-opacity-50 rounded-lg p-4 backdrop-blur-sm border-2 border-green-500">
         <p className="text-sm text-green-200">
           💡 <span className="font-semibold">কিভাবে জিতবেন:</span> লেভেলশেষ করতে{" "}
           <span className="text-lime-300 font-bold">{targetScore}টি গুপ্ত</span> ধরুন!
           আপনি গন্তব্যে 🏰 পৌঁছেও লেভেলশেষ করতে পারেন। কোনো সময় সীমা নেই - আপনার মতো খেলুন!
         </p>
-      </div>
+      </div> */}
     </div>
   );
 }
