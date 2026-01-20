@@ -4,6 +4,7 @@ interface WhackAMoleLevelProps {
   score: number;
   onScoreUpdate: (newScore: number) => void;
   onLevelComplete: () => void;
+  difficulty?: 'easy' | 'normal' | 'hard';
 }
 
 interface LevelGameState {
@@ -22,7 +23,12 @@ function WhackAMoleLevel({
   score,
   onScoreUpdate,
   onLevelComplete,
+  difficulty = 'normal',
 }: WhackAMoleLevelProps) {
+  // Adjust speed based on difficulty
+  // Easier: longer time for moles to stay visible (slower = easier)
+  const moleSpeed = difficulty === 'hard' ? 600 : difficulty === 'easy' ? 1800 : 1200;
+
   const [gameState, setGameState] = useState<LevelGameState>({
     timeLeft: 30,
     molePosition: null,
@@ -51,7 +57,7 @@ function WhackAMoleLevel({
     }
   }, [score, onLevelComplete]);
 
-  // Mole position effect - changes mole location every 1200-1600ms
+  // Mole position effect - changes mole location based on difficulty
   useEffect(() => {
     if (!gameState.gameActive) return;
 
@@ -63,12 +69,13 @@ function WhackAMoleLevel({
     // Set initial mole position
     changeMole();
 
-    // Change mole position at random intervals
-    const intervalDuration = Math.random() * 400 + 1200; // 1200-1600ms
+    // Change mole position at intervals based on difficulty
+    // Hard: 600ms, Normal: 1200ms, Easy: 1800ms with some randomness for variety
+    const intervalDuration = moleSpeed + Math.random() * 500;
     const moleInterval = setInterval(changeMole, intervalDuration);
 
     return () => clearInterval(moleInterval);
-  }, [gameState.gameActive]);
+  }, [gameState.gameActive, moleSpeed]);
 
   // Handle hole click
   const handleHoleClick = (index: number) => {

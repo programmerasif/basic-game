@@ -9,7 +9,8 @@ interface PlayerProps {
   position: Position;
   onPositionChange: (newPosition: Position) => void;
   mazeGrid: boolean[][];
-  mazeSize: number;
+  mazeSize: number; // Number of columns
+  gridRows?: number; // Number of rows (optional, defaults to mazeSize for square grids)
 }
 
 /**
@@ -25,8 +26,10 @@ function Player({
   onPositionChange,
   mazeGrid,
   mazeSize,
+  gridRows,
 }: PlayerProps) {
   const [isMoving, setIsMoving] = useState(false);
+  const rows = gridRows || mazeSize; // Use gridRows if provided, otherwise square grid
 
   // Handle keyboard input for player movement
   useEffect(() => {
@@ -61,7 +64,7 @@ function Player({
           break;
         case "arrowdown":
         case "s":
-          newRow = Math.min(mazeSize - 1, position.row + 1);
+          newRow = Math.min(rows - 1, position.row + 1);
           break;
         case "arrowleft":
         case "a":
@@ -85,7 +88,7 @@ function Player({
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [position, onPositionChange, mazeGrid, mazeSize, isMoving]);
+  }, [position, onPositionChange, mazeGrid, mazeSize, rows, isMoving]);
 
   // Render the player character at their current position
   return (
@@ -93,7 +96,7 @@ function Player({
       className="absolute w-8 h-8 flex items-center justify-center text-2xl transition-all duration-100 animate-pulse"
       style={{
         left: `${(position.col * 100) / mazeSize}%`,
-        top: `${(position.row * 100) / mazeSize}%`,
+        top: `${(position.row * 100) / rows}%`,
       }}
     >
       🧑

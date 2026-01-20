@@ -17,7 +17,7 @@ interface MazeGridProps {
 }
 
 const MAZE_SIZE = 14; // 14x14 grid for more complexity
-const COLLECTIBLE_ICONS = ["💰", "🍎", "🏠", "⭐", "💎"];
+const COLLECTIBLE_ICONS = ["💰", "🍎", "�", "⭐", "💎"];
 
 /**
  * MazeGrid Component
@@ -240,7 +240,7 @@ function MazeGrid({
             height: `${100 / MAZE_SIZE}%`,
           }}
         >
-          🏰
+          �
         </div>
       )}
 
@@ -283,7 +283,7 @@ function MazeGrid({
         <p className="font-bold text-white mb-1">Controls:</p>
         <p>📍 Arrow Keys or WASD</p>
         <p>💰 Collect items</p>
-        <p>🏰 Reach castle!</p>
+        <p>� Reach castle!</p>
       </div>
     </div>
   );
