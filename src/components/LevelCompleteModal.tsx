@@ -33,25 +33,25 @@ function LevelCompleteModal({
     const isLastLevel = currentLevel >= totalLevels;
 
     // Level slogans mapping
-    const levelSlogans: Record<number, { slogan: string; instruction: string }> = {
+    // const levelSlogans: Record<number, { slogan: string; instruction: string }> = {
 
-        1: {
-            slogan: "খুনের নেশায় মত্ত, ওত পেতে থাকা গুপ্ত",
-            instruction: "৫ টি খুনি গুপ্তকে ধরলে, পরের স্টেজ হবে রাজাকার গুপ্ত।"
-        },
-        2: {
-            slogan: "৭১ এ দেশের সাথে বেইমানির আদর্শ এখনো লুকিয়ে আছে অন্তরে",
-            instruction: "৫ টি রাজাকার গুপ্তকে ধরলে, পরের স্টেজ হবে রগকাটা-সন্ত্রাসি গুপ্ত।"
-        },
-        3: {
-            slogan: "সাধারণের মাঝে লুকিয়ে আছে হিংস্র হায়নারা",
-            instruction: "৫টি রগকাটা-সন্ত্রাসি গুপ্তকে ধরলে, পরের স্টেজ হবে চাঁদাবাজ গুপ্ত।"
-        },
-        4: {
-            slogan: "ধর্মের নামে হাদিয়া বলে চাঁদা চেয়ে বেড়ায় গুপ্তরা",
-            instruction: "৫ টি চাঁদাবাজ গুপ্তকে ধরে গেম শেষ করুন।"
-        }
-    };
+    //     1: {
+    //         slogan: "খুনের নেশায় মত্ত, ওত পেতে থাকা গুপ্ত",
+    //         instruction: "৫ টি খুনি গুপ্তকে ধরলে, পরের স্টেজ হবে রাজাকার গুপ্ত।"
+    //     },
+    //     2: {
+    //         slogan: "৭১ এ দেশের সাথে বেইমানির আদর্শ এখনো লুকিয়ে আছে অন্তরে",
+    //         instruction: "৫ টি রাজাকার গুপ্তকে ধরলে, পরের স্টেজ হবে রগকাটা-সন্ত্রাসি গুপ্ত।"
+    //     },
+    //     3: {
+    //         slogan: "সাধারণের মাঝে লুকিয়ে আছে হিংস্র হায়নারা",
+    //         instruction: "৫টি রগকাটা-সন্ত্রাসি গুপ্তকে ধরলে, পরের স্টেজ হবে চাঁদাবাজ গুপ্ত।"
+    //     },
+    //     4: {
+    //         slogan: "ধর্মের নামে হাদিয়া বলে চাঁদা চেয়ে বেড়ায় গুপ্তরা",
+    //         instruction: "৫ টি চাঁদাবাজ গুপ্তকে ধরে গেম শেষ করুন।"
+    //     }
+    // };
 
     // News links for each level
     const newsLinks: Record<number, string> = {
@@ -70,7 +70,7 @@ function LevelCompleteModal({
     };
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const currentLevelData = levelSlogans[currentLevel];
+    // const currentLevelData = levelSlogans[currentLevel];
 
 
     return (

@@ -4,11 +4,17 @@ import MazeLevel from "./MazeLevel";
 import SnakeLevel from "./SnakeLevel";
 import LevelCompleteModal from "./LevelCompleteModal";
 import LevelStartModal from "./LevelStartModal";
+import dhorshokIcon from "../assets/dorshok.png"
+import razakar from "../assets/razakar.png"
+import chadabaj from "../assets/chadabaj.png"
+import rog from "../assets/rog.png"
+import chor from "../assets/chor.png"
 
 // Import music
 import commonMusic from "../assets/music/common.mp3";
 import victoryMusic from "../assets/music/victory.mp3";
 import pointSound from "../assets/music/point.mp3";
+import { ArrowRightLeft } from "lucide-react";
 
 
 interface SharedGameState {
@@ -253,7 +259,7 @@ function GameManager() {
         onReturnHome={handleReturnHome}
       />
 
-      <div className={`w-full ${gameStarted && sharedState.currentLevel === 2 ? 'max-w-full md:max-w-4xl h-screen md:h-auto overflow-hidden' : 'max-w-4xl'}`}>
+      <div className={`w-full ${gameStarted && sharedState.currentLevel === 2 ? ' max-w-7xl h-screen md:h-auto overflow-hidden' : 'max-w-7xl'}`}>
         {/* Game Completion Screen */}
         {gameCompleted ? (
           <div className="text-center px-4">
@@ -325,6 +331,9 @@ function GameManager() {
                   <p className="text-green-300 text-lg mb-6">
                     গুপ্ত ধর গেম-এ আপনাকে স্বাগতম
                   </p>
+                  <p className="text-green-300 text-lg mb-6">
+                    ধর্ষক, খুনি, সন্ত্রাসী-রগকাটা, রাজাকার, চাঁদাবাজ গুপ্ত ধরতে তৈরী হোন।
+                  </p>
 
                   {/* Score Display */}
                   <div className="flex justify-end mb-4">
@@ -335,42 +344,63 @@ function GameManager() {
                   </div>
 
                   {/* Flowchart Level Progression */}
-                  <div className="flex flex-wrap justify-center items-center gap-2 md:gap-4 mb-8 p-4 bg-green-900 bg-opacity-40 rounded-xl border border-green-600">
+                  <div className="w-[95%] mx-auto flex flex-wrap md:flex-nowrap justify-center items-center gap-2 md:gap-4 mb-8 p-4 bg-green-900 bg-opacity-40 rounded-xl border border-green-600">
                     {/* Level 1 */}
                     <div className="flex flex-col items-center">
-                      <div className="bg-gradient-to-r from-green-600 to-emerald-600 px-3 md:px-6 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg">
+                      <div className="bg-gradient-to-r from-green-600 to-emerald-600 px-3 md:px-6 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg flex items-center gap-2">
+                        <img src={dhorshokIcon} alt=""  className="rounded w-10"/>
                         <p className="text-white font-bold text-xs md:text-sm">ধর্ষক গুপ্ত</p>
                       </div>
                     </div>
-                    <div className="text-green-400 text-xl md:text-2xl">▶</div>
+                    <div className="text-green-400 text-xl md:text-2xl">
+                      <ArrowRightLeft  className="text-white"/>
+                    </div>
 
                     {/* Level 2 */}
                     <div className="flex flex-col items-center">
-                      <div className="bg-gradient-to-r from-green-600 to-emerald-600 px-3 md:px-6 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg">
+                      <div className="bg-gradient-to-r from-green-600 to-emerald-600 px-3 md:px-6 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg flex items-center gap-2">
+                        <span className="text-lg md:text-xl">
+                          <img src={chor} alt=""  className="rounded w-10"/>
+                        </span>
                         <p className="text-white font-bold text-xs md:text-sm">খুনি গুপ্ত</p>
                       </div>
                     </div>
-                    <div className="text-green-400 text-xl md:text-2xl">▶</div>
+                    <div className="text-green-400 text-xl md:text-2xl">
+                      <ArrowRightLeft  className="text-white"/>
+                    </div>
 
                     {/* Level 3 */}
                     <div className="flex flex-col items-center">
-                      <div className="bg-gradient-to-r from-green-600 to-emerald-600 px-3 md:px-6 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg">
+                      <div className="bg-gradient-to-r from-green-600 to-emerald-600 px-3 md:px-6 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg flex items-center gap-2">
+                        <span className="text-lg md:text-xl">
+                          <img src={razakar} alt=""  className="rounded w-10"/>
+                        </span>
                         <p className="text-white font-bold text-xs md:text-sm">রাজাকার গুপ্ত</p>
                       </div>
                     </div>
-                    <div className="text-green-400 text-xl md:text-2xl">▶</div>
+                    <div className="text-green-400 text-xl md:text-2xl">
+                      <ArrowRightLeft  className="text-white"/>
+                    </div>
 
                     {/* Level 4 */}
                     <div className="flex flex-col items-center">
-                      <div className="bg-gradient-to-r from-green-600 to-emerald-600 px-3 md:px-6 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg">
+                      <div className="bg-gradient-to-r from-green-600 to-emerald-600 px-3 md:px-6 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg flex items-center gap-2">
+                        <span className="text-lg md:text-xl">
+                          <img src={rog} alt=""  className="rounded w-10"/>
+                        </span>
                         <p className="text-white font-bold text-xs md:text-sm">রগকাটা-সন্ত্রাসি গুপ্ত</p>
                       </div>
                     </div>
-                    <div className="text-green-400 text-xl md:text-2xl">▶</div>
+                    <div className="text-green-400 text-xl md:text-2xl">
+                      <ArrowRightLeft  className="text-white"/>
+                    </div>
 
                     {/* Level 5 */}
                     <div className="flex flex-col items-center">
-                      <div className="bg-gradient-to-r from-green-600 to-emerald-600 px-3 md:px-6 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg">
+                      <div className="bg-gradient-to-r from-green-600 to-emerald-600 px-3 md:px-6 py-2 md:py-3 rounded-lg border-2 border-green-400 shadow-lg flex items-center gap-2">
+                        <span className="text-lg md:text-xl">
+                          <img src={chadabaj} alt=""  className="rounded w-10"/>
+                        </span>
                         <p className="text-white font-bold text-xs md:text-sm">চাঁদাবাজ গুপ্ত</p>
                       </div>
                     </div>
