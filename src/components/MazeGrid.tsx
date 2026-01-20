@@ -1,5 +1,9 @@
 import { useEffect, useState, useCallback } from "react";
 import type { Position } from "./Player";
+import khuni1 from "../assets/khuni/khuni1.png";
+import khuni2 from "../assets/khuni/khuni2.png";
+import khuni3 from "../assets/khuni/khuni3.png";
+import khuno4 from "../assets/khuni/khuno4.png";
 
 export interface Collectible {
   id: string;
@@ -16,7 +20,7 @@ interface MazeGridProps {
 }
 
 const MAZE_SIZE = 30; // 30x30 grid for finer granularity and more movement space
-const COLLECTIBLE_ICONS = ["💰", "🍎", "🏠", "⭐", "💎"];
+const COLLECTIBLE_ICONS = [khuni1, khuni2, khuni3, khuno4];
 
 /**
  * MazeGrid Component
@@ -81,13 +85,13 @@ function MazeGrid({
       newCollectibles.push({
         id: `collectible-home`,
         position: homePos,
-        icon: "🏠",
+        icon: COLLECTIBLE_ICONS[0],
       });
       usedPositions.add(`${homePos.row}-${homePos.col}`);
     }
 
     // Place other collectibles in a circular pattern around center
-    const otherIcons = COLLECTIBLE_ICONS.filter(icon => icon !== "🏠");
+    const otherIcons = COLLECTIBLE_ICONS;
     const numOtherCollectibles = 9;
     const radii = [5, 8, 11]; // Different radii for circular placement
 
@@ -125,32 +129,32 @@ function MazeGrid({
     const mazePattern = [
       [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
       [1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-      [0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
       [0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
       [0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
       [0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
       [0, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1],
       [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1],
-      [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1],
-      [1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1],
-      [1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1],
-      [0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1],
-      [0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1],
-      [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1],
-      [0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1],
-      [0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1],
+      [0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1],
+      [1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1],
+      [1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1],
+      [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1],
+      [0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1],
+      [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1],
+      [0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1],
+      [0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1],
       [1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
       [1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-      [1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
+      [1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
       [1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
       [1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
       [1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0],
       [1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0],
-      [1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0],
-      [1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0],
-      [1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-      [1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
-      [1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1],
+      [1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0],
+      [1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0],
+      [1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+      [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1],
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1],
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1],
 
@@ -349,6 +353,49 @@ function MazeGrid({
     }
   }, [playerPosition, destination, onDestinationReached]);
 
+  // Move collectibles continuously around the maze
+  useEffect(() => {
+    if (mazeGrid.length === 0 || collectibles.length === 0) return;
+
+    const moveInterval = setInterval(() => {
+      setCollectibles((prevCollectibles) => {
+        return prevCollectibles.map((collectible) => {
+          const { row, col } = collectible.position;
+          const directions = [
+            { row: row - 1, col }, // up
+            { row: row + 1, col }, // down
+            { row, col: col - 1 }, // left
+            { row, col: col + 1 }, // right
+          ];
+
+          // Filter valid moves (on path, not wall, not border)
+          const validMoves = directions.filter((pos) => {
+            // Check if within bounds (not on border)
+            if (pos.row <= 0 || pos.row >= MAZE_SIZE - 1 ||
+              pos.col <= 0 || pos.col >= MAZE_SIZE - 1) {
+              return false;
+            }
+            // Check if it's a valid path (not a wall)
+            return mazeGrid[pos.row] && mazeGrid[pos.row][pos.col];
+          });
+
+          // Always move if there are valid moves available
+          if (validMoves.length > 0) {
+            const randomMove = validMoves[Math.floor(Math.random() * validMoves.length)];
+            return {
+              ...collectible,
+              position: randomMove,
+            };
+          }
+
+          return collectible;
+        });
+      });
+    }, 500); // Move collectibles every 500ms for smoother continuous movement
+
+    return () => clearInterval(moveInterval);
+  }, [mazeGrid, collectibles.length]);
+
   // Check if player has collected an item
   useEffect(() => {
     const collectedIndex = collectibles.findIndex(
@@ -392,7 +439,10 @@ function MazeGrid({
                   : "bg-gradient-to-br from-green-100 to-green-50"
                   }`}
                 style={{
-                  boxShadow: isWall ? 'inset 0 0 2px rgba(0, 0, 0, 0.3)' : 'inset 0 0 1px rgba(34, 197, 94, 0.2)'
+                  boxShadow: isWall ? 'inset 0 0 2px rgba(0, 0, 0, 0.3)' : 'inset 0 0 1px rgba(34, 197, 94, 0.2)',
+                  backgroundImage: isWall
+                    ? 'repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.03) 0px, rgba(255, 255, 255, 0.03) 2px, transparent 2px, transparent 4px), repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.05) 0px, rgba(0, 0, 0, 0.05) 2px, transparent 2px, transparent 4px)'
+                    : undefined
                 }}
               />
             );
@@ -422,20 +472,28 @@ function MazeGrid({
       {/* Collectibles layer - positioned within the padded area */}
       <div className="absolute inset-0 p-2 md:p-14 pointer-events-none">
         <div className="relative w-full h-full">
-          {collectibles.map((collectible) => (
-            <div
-              key={collectible.id}
-              className="absolute flex items-center justify-center text-xl animate-bounce drop-shadow-lg"
-              style={{
-                left: `${(collectible.position.col * 100) / MAZE_SIZE}%`,
-                top: `${(collectible.position.row * 100) / MAZE_SIZE}%`,
-                width: `${100 / MAZE_SIZE}%`,
-                height: `${100 / MAZE_SIZE}%`,
-              }}
-            >
-              {collectible.icon}
-            </div>
-          ))}
+          {collectibles.map((collectible, index) => {
+            const bgColors = ['bg-red-400', 'bg-blue-400', 'bg-yellow-400', 'bg-purple-400'];
+            const bgColor = bgColors[index % bgColors.length];
+            return (
+              <div
+                key={collectible.id}
+                className={`absolute flex items-center justify-center drop-shadow-lg transition-all duration-500 ease-in-out ${bgColor} rounded-full ring-1 ring-white`}
+                style={{
+                  left: `${(collectible.position.col * 100) / MAZE_SIZE}%`,
+                  top: `${(collectible.position.row * 100) / MAZE_SIZE}%`,
+                  width: `${100 / MAZE_SIZE}%`,
+                  height: `${100 / MAZE_SIZE}%`,
+                }}
+              >
+                <img
+                  src={collectible.icon}
+                  alt="collectible"
+                  className="w-full h-full object-contain p-0.5"
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
 

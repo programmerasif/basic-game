@@ -3,6 +3,7 @@ import WhackAMoleLevel from "./WhackAMoleLevel";
 import MazeLevel from "./MazeLevel";
 import SnakeLevel from "./SnakeLevel";
 import LevelCompleteModal from "./LevelCompleteModal";
+import LevelStartModal from "./LevelStartModal";
 
 // Import music
 import commonMusic from "../assets/music/common.mp3";
@@ -31,7 +32,9 @@ function GameManager() {
   const [shouldAdvanceLevel, setShouldAdvanceLevel] = useState(false);
   const [nextLevel, setNextLevel] = useState(1);
   const [showLevelCompleteModal, setShowLevelCompleteModal] = useState(false);
+  const [showLevelStartModal, setShowLevelStartModal] = useState(false);
   const [completedLevelScore, setCompletedLevelScore] = useState(0);
+  const [levelReady, setLevelReady] = useState(false);
 
   // Level names in Bengali
   const levelNames: Record<number, string> = {
@@ -154,14 +157,19 @@ function GameManager() {
   const handleContinueToNextLevel = () => {
     if (sharedState.currentLevel === 5) {
       setGameCompleted(true);
+      setShowLevelCompleteModal(false);
     } else if (shouldAdvanceLevel && nextLevel !== sharedState.currentLevel) {
       setSharedState((prev) => ({
         ...prev,
         currentLevel: nextLevel,
       }));
       setShouldAdvanceLevel(false);
+      setShowLevelCompleteModal(false);
+      setLevelReady(false);
+      setShowLevelStartModal(true);
+    } else {
+      setShowLevelCompleteModal(false);
     }
-    setShowLevelCompleteModal(false);
   };
 
   // Handle return to home
@@ -205,7 +213,14 @@ function GameManager() {
 
   // Start the game
   const startGame = () => {
+    setShowLevelStartModal(true);
+  };
+
+  // Handle level start after showing modal
+  const handleLevelStart = () => {
+    setShowLevelStartModal(false);
     setGameStarted(true);
+    setLevelReady(true);
     // Try to play music on user interaction (button click)
     if (audioRef.current) {
       audioRef.current.play().catch(() => {
@@ -216,6 +231,14 @@ function GameManager() {
 
   return (
     <div className={`min-h-screen bg-gradient-to-br from-slate-950 via-green-950 to-slate-900 flex items-center justify-center ${gameStarted && (sharedState.currentLevel === 2 || sharedState.currentLevel === 4) ? 'p-0 md:p-4 fixed md:relative inset-0 overflow-hidden md:overflow-visible' : 'p-4'}`}>
+      {/* Level Start Modal */}
+      <LevelStartModal
+        isOpen={showLevelStartModal}
+        currentLevel={sharedState.currentLevel}
+        levelName={levelNames[sharedState.currentLevel] || "Unknown Level"}
+        onStart={handleLevelStart}
+      />
+
       {/* Level Complete Modal */}
       <LevelCompleteModal
         isOpen={showLevelCompleteModal}
@@ -362,36 +385,36 @@ function GameManager() {
                       <div className="flex items-start gap-2">
                         <span className="text-pink-400">👤</span>
                         <div>
-                          <span className="text-white font-bold">ধর্ষক গুপ্ত</span>
-                          <p className="text-sm">৫টি ধর্ষক গুপ্তকে ধরলে, পরের স্টেজ হবে খুনি গুপ্ত।</p>
+                          <span className="text-white font-bold">স্টেজ 1 : ধর্ষক গুপ্ত : উপরে ধর্মের বেশ, নারী দেখলেই জেগে উঠে দুষ্টু মন</span>
+                          <p className="text-sm">৫ টি ধর্ষক গুপ্তকে ধরলে, পরের স্টেজ হবে খুনি গুপ্ত।</p>
                         </div>
                       </div>
                       <div className="flex items-start gap-2">
                         <span className="text-pink-400">👤</span>
                         <div>
-                          <span className="text-white font-bold">খুনি গুপ্ত</span>
-                          <p className="text-sm">৫টি খুনি গুপ্তকে ধরলে, পরের স্টেজ হবে রাজাকার গুপ্ত।</p>
+                          <span className="text-white font-bold"> খুনি গুপ্ত: খুনের নেশায় মত্ত, ওত পেতে থাকা গুপ্ত</span>
+                          <p className="text-sm">৫ টি খুনি গুপ্তকে ধরলে, পরের স্টেজ হবে রাজাকার গুপ্ত।</p>
                         </div>
                       </div>
                       <div className="flex items-start gap-2">
                         <span className="text-pink-400">👤</span>
                         <div>
-                          <span className="text-white font-bold">রাজাকার গুপ্ত</span>
-                          <p className="text-sm">৫টি রাজাকার গুপ্তকে ধরলে, পরের স্টেজ হবে রগকাটা-সন্ত্রাসি গুপ্ত।</p>
+                          <span className="text-white font-bold">স্টেজ 3 : রাজাকার গুপ্ত: ৭১ এ দেশের সাথে বেইমানির আদর্শ এখনো লুকিয়ে আছে অন্তরে</span>
+                          <p className="text-sm">৫ টি রাজাকার গুপ্তকে ধরলে, পরের স্টেজ হবে রগকাটা-সন্ত্রাসি গুপ্ত।</p>
                         </div>
                       </div>
                       <div className="flex items-start gap-2">
                         <span className="text-pink-400">👤</span>
                         <div>
-                          <span className="text-white font-bold">রগকাটা-সন্ত্রাসি গুপ্ত</span>
+                          <span className="text-white font-bold">রগকাটা-সন্ত্রাসি গুপ্ত: সাধারণের মাঝে লুকিয়ে আছে হিংস্র হায়নারা</span>
                           <p className="text-sm">৫টি রগকাটা-সন্ত্রাসি গুপ্তকে ধরলে, পরের স্টেজ হবে চাঁদাবাজ গুপ্ত।</p>
                         </div>
                       </div>
                       <div className="flex items-start gap-2">
                         <span className="text-pink-400">👤</span>
                         <div>
-                          <span className="text-white font-bold">চাঁদাবাজ গুপ্ত</span>
-                          <p className="text-sm">৫টি চাঁদাবাজ গুপ্তকে ধরলে, গেম শেষ!</p>
+                          <span className="text-white font-bold">চাঁদাবাজ গুপ্ত ধর্মের নামে হাদিয়া বলে চাঁদা চেয়ে বেড়ায় গুপ্তরা</span>
+                          <p className="text-sm">৫ টি চাঁদাবাজ গুপ্তকে ধরে গেম শেষ করুন।</p>
                         </div>
                       </div>
                     </div>
@@ -405,7 +428,7 @@ function GameManager() {
                   </button>
                 </div>
               </div>
-            ) : sharedState.currentLevel === 1 ? (
+            ) : levelReady && sharedState.currentLevel === 1 ? (
               // Level 1: ধর্ষক গুপ্ত
               <WhackAMoleLevel
                 key="whack-level-1"
@@ -420,7 +443,7 @@ function GameManager() {
                 levelName="ধর্ষক গুপ্ত"
                 nextLevelName="খুনি গুপ্ত"
               />
-            ) : sharedState.currentLevel === 2 ? (
+            ) : levelReady && sharedState.currentLevel === 2 ? (
               // Level 2: খুনি গুপ্ত
               <MazeLevel
                 key="maze-level-2"
@@ -431,7 +454,7 @@ function GameManager() {
                 targetScore={10}
                 levelName="খুনি গুপ্ত"
               />
-            ) : sharedState.currentLevel === 3 ? (
+            ) : levelReady && sharedState.currentLevel === 3 ? (
               // Level 3: রাজাকার গুপ্ত
               <SnakeLevel
                 key="snake-level-3"
@@ -442,7 +465,7 @@ function GameManager() {
                 targetScore={15}
                 levelName="রাজাকার গুপ্ত"
               />
-            ) : sharedState.currentLevel === 4 ? (
+            ) : levelReady && sharedState.currentLevel === 4 ? (
               // Level 4: রগকাটা-সন্ত্রাসি গুপ্ত
               <MazeLevel
                 key="maze-level-4"
@@ -453,7 +476,7 @@ function GameManager() {
                 targetScore={20}
                 levelName="রগকাটা-সন্ত্রাসি গুপ্ত"
               />
-            ) : (
+            ) : levelReady && sharedState.currentLevel === 5 ? (
               // Level 5: চাঁদাবাজ গুপ্ত
               <WhackAMoleLevel
                 key="whack-level-5"
@@ -468,7 +491,7 @@ function GameManager() {
                 levelName="চাঁদাবাজ গুপ্ত"
                 nextLevelName="গেম শেষ!"
               />
-            )}
+            ) : null}
           </>
         )}
       </div>

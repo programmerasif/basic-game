@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import mole from "../assets/dorshok.png"
 
 interface WhackAMoleLevelProps {
   score: number;
@@ -155,7 +156,13 @@ function WhackAMoleLevel({
               <div className="w-20 h-20 bg-gradient-to-b from-green-800 to-black rounded-lg shadow-inner flex items-center justify-center">
                 {/* Mole appears here */}
                 {index === gameState.molePosition && gameState.gameActive && (
-                  <span className="text-6xl animate-bounce">🐹</span>
+                  <span className="text-6xl animate-bounce">
+                    <img
+                      src={mole}
+                      alt="mole"
+                      className="w-16 h-16 animate-bounce"
+                    />
+                  </span>
                 )}
               </div>
             </div>

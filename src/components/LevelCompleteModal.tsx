@@ -32,6 +32,47 @@ function LevelCompleteModal({
 
     const isLastLevel = currentLevel >= totalLevels;
 
+    // Level slogans mapping
+    const levelSlogans: Record<number, { slogan: string; instruction: string }> = {
+
+        1: {
+            slogan: "খুনের নেশায় মত্ত, ওত পেতে থাকা গুপ্ত",
+            instruction: "৫ টি খুনি গুপ্তকে ধরলে, পরের স্টেজ হবে রাজাকার গুপ্ত।"
+        },
+        2: {
+            slogan: "৭১ এ দেশের সাথে বেইমানির আদর্শ এখনো লুকিয়ে আছে অন্তরে",
+            instruction: "৫ টি রাজাকার গুপ্তকে ধরলে, পরের স্টেজ হবে রগকাটা-সন্ত্রাসি গুপ্ত।"
+        },
+        3: {
+            slogan: "সাধারণের মাঝে লুকিয়ে আছে হিংস্র হায়নারা",
+            instruction: "৫টি রগকাটা-সন্ত্রাসি গুপ্তকে ধরলে, পরের স্টেজ হবে চাঁদাবাজ গুপ্ত।"
+        },
+        4: {
+            slogan: "ধর্মের নামে হাদিয়া বলে চাঁদা চেয়ে বেড়ায় গুপ্তরা",
+            instruction: "৫ টি চাঁদাবাজ গুপ্তকে ধরে গেম শেষ করুন।"
+        }
+    };
+
+    // News links for each level
+    const newsLinks: Record<number, string> = {
+        1: "https://www.jamatnama.net/rape-harassment",
+        2: "https://www.jamatnama.net/abuse-of-religion",
+        3: "https://www.jamatnama.net/crime-activities",
+        4: "https://www.jamatnama.net/extortion-corruption",
+        5: "https://www.jamatnama.net/abuse-of-religion"
+    };
+
+    const handleNewsClick = () => {
+        const newsUrl = newsLinks[currentLevel];
+        if (newsUrl) {
+            window.open(newsUrl, '_blank', 'noopener,noreferrer');
+        }
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const currentLevelData = levelSlogans[currentLevel];
+
+
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-2 xs:p-3 sm:p-4 bg-black bg-opacity-75 backdrop-blur-sm overflow-y-auto">
             <div className="bg-gradient-to-br from-green-600 via-emerald-600 to-teal-600 rounded-2xl sm:rounded-3xl p-4 xs:p-5 sm:p-6 md:p-8 lg:p-12 max-w-[95vw] xs:max-w-[90vw] sm:max-w-lg md:max-w-xl lg:max-w-2xl w-full shadow-2xl border-2 xs:border-3 sm:border-4 border-yellow-400 relative overflow-hidden animate-pulse my-auto">
@@ -56,6 +97,8 @@ function LevelCompleteModal({
                     <p className="text-base xs:text-lg sm:text-xl md:text-2xl font-bold text-yellow-200 mb-3 xs:mb-4 sm:mb-5 md:mb-6">
                         {levelName}
                     </p>
+
+
 
                     {/* Score Display */}
                     <div className="bg-white bg-opacity-90 rounded-xl sm:rounded-2xl p-3 xs:p-4 sm:p-5 md:p-6 mb-3 xs:mb-4 sm:mb-5 md:mb-6 backdrop-blur-sm border-2 xs:border-3 sm:border-4 border-yellow-400 shadow-xl">
@@ -86,6 +129,16 @@ function LevelCompleteModal({
                             </p>
                         </div>
                     )}
+
+                    {/* News Button */}
+                    <div className="mb-3 xs:mb-4 sm:mb-5">
+                        <button
+                            onClick={handleNewsClick}
+                            className="w-full px-4 xs:px-6 sm:px-8 md:px-10 py-2.5 xs:py-3 sm:py-4 bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-600 text-white font-extrabold text-sm xs:text-base sm:text-lg md:text-xl rounded-lg sm:rounded-xl shadow-2xl hover:from-blue-600 hover:to-indigo-700 transition-all transform hover:scale-105 active:scale-95 border-2 xs:border-3 sm:border-4 border-blue-300"
+                        >
+                            📰 নিউজ দেখুন
+                        </button>
+                    </div>
 
                     {/* Buttons */}
                     <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
